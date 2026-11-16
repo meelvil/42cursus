@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Listes chaînées – libft bonus</title>
+<style>
+:root{--bg:#0b0d17;--card:#151932;--card2:#1d2347;--txt:#e8ebff;--mut:#8f97c9;--pink:#ff4fd8;--cyan:#27e6ff;--lime:#b6ff3b;--yel:#ffd23f;--red:#ff5470}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 600px at 70% -10%,#2a1b5e55,transparent),var(--bg);color:var(--txt);font:16px/1.6 system-ui,Segoe UI,sans-serif}
+code,pre,.mono{font-family:Consolas,"Fira Code",monospace}
+code{background:#ffffff12;padding:1px 5px;border-radius:5px;font-size:.92em}
+main{max-width:940px;margin:auto;padding:0 16px 80px}
+header.hero{text-align:center;padding:56px 0 18px}
+h1{font-size:clamp(2rem,6vw,3.4rem);margin:0;background:linear-gradient(90deg,var(--pink),var(--cyan),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.15}
+.sub{color:var(--mut);margin-top:8px}
+#xpbar{position:sticky;top:0;z-index:20;background:#0b0d17ee;backdrop-filter:blur(8px);padding:10px 16px;border-bottom:1px solid #2b3163;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+#xpbar .track{flex:1;min-width:120px;height:12px;border-radius:9px;background:#222850;overflow:hidden}
+#xpfill{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--yel));transition:width .5s}
+#xptxt{font-weight:700;min-width:90px;text-align:right}
+#rank{color:var(--lime);font-weight:700;font-size:.9rem}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0 0}
+nav.toc a{color:var(--mut);text-decoration:none;font-size:.85rem;background:var(--card);border:1px solid #2b3163;border-radius:99px;padding:3px 12px}
+nav.toc a:hover{color:var(--txt);border-color:var(--cyan)}
+section{background:var(--card);border:1px solid #2b3163;border-radius:18px;padding:24px;margin:26px 0;box-shadow:0 10px 40px #0006}
+section h2{margin:0 0 6px;font-size:1.5rem}
+h3{margin:22px 0 6px;color:var(--cyan);font-size:1.1rem}
+.tag{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.08em;color:#000;background:var(--cyan);padding:2px 10px;border-radius:99px;margin-bottom:8px}
+.tag.boss{background:var(--pink)}
+pre{background:#0a0c1c;border:1px solid #2b3163;border-radius:12px;padding:14px;overflow:auto;margin:12px 0;font-size:.9rem;line-height:1.55}
+.kw{color:var(--pink)}.ty{color:var(--cyan)}.fn{color:var(--yel)}.nu{color:var(--lime)}.cm{color:#6f78ad}
+.ln{display:block;padding:0 6px;border-radius:5px;transition:background .25s}
+.ln.on{background:#ff4fd833;box-shadow:inset 3px 0 var(--pink)}
+button{font:inherit;cursor:pointer;border:0;border-radius:11px;padding:9px 16px;background:var(--card2);color:var(--txt);font-weight:600;transition:transform .12s,background .2s}
+button:hover{transform:translateY(-2px);background:#2b3470}
+button.go{background:linear-gradient(90deg,var(--pink),#9b5cff);color:#fff}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.callout{border-left:4px solid var(--yel);background:#ffd23f14;padding:10px 14px;border-radius:0 10px 10px 0;margin:14px 0}
+.callout.bad{border-color:var(--red);background:#ff547014}
+.callout.ok{border-color:var(--lime);background:#b6ff3b10}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.mem{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.cell{background:var(--card2);border-radius:12px;padding:10px 12px;border:1px solid #333c80;font-size:.92rem}
+.cell b{display:block;color:var(--cyan)}
+.addr{color:var(--lime);font-size:.8rem;font-family:Consolas,monospace}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.93rem}
+td,th{border:1px solid #2b3163;padding:7px 10px;text-align:left}
+th{background:var(--card2);color:var(--cyan)}
+input[type=text]{background:#0a0c1c;color:var(--txt);border:2px solid #333c80;border-radius:10px;padding:8px 12px;font:inherit;font-family:Consolas,monospace;width:200px}
+input[type=text]:focus{outline:0;border-color:var(--cyan)}
+/* list drawing */
+.lst{display:flex;align-items:center;flex-wrap:wrap;gap:4px 2px;margin:14px 0;min-height:76px;padding-top:22px}
+.nw{position:relative;display:flex;align-items:center}
+.ptr{position:absolute;top:-22px;left:0;font-size:.78rem;font-weight:700;color:var(--pink);white-space:nowrap;font-family:Consolas,monospace}
+.node{display:flex;border:2px solid #333c80;border-radius:10px;overflow:hidden;background:var(--card2);transition:.25s;font-family:Consolas,monospace}
+.node .c{padding:6px 12px;font-weight:700}
+.node .n{padding:6px 8px;background:#0a0c1c;color:var(--mut);font-size:.8rem}
+.node.cur{border-color:var(--pink);transform:translateY(-4px);box-shadow:0 8px 24px #ff4fd855}
+.node.freed{opacity:.4;border-style:dashed;border-color:var(--red)}
+.node.lost{border-color:var(--red);box-shadow:0 0 18px #ff547066}
+.arrow{color:var(--cyan);font-weight:700;padding:0 4px}
+.nul{font-family:Consolas,monospace;color:var(--red);font-weight:700;padding:4px 8px;border:2px dashed #ff547066;border-radius:8px}
+.nul.cur{border-color:var(--pink);border-style:solid;box-shadow:0 8px 24px #ff4fd855}
+.vars{display:flex;gap:10px;flex-wrap:wrap;font-family:Consolas,monospace}
+.vars span{background:#0a0c1c;border:1px solid #333c80;border-radius:8px;padding:4px 10px}
+/* quiz */
+.q{margin:18px 0}
+.q>p{margin:0 0 4px;font-weight:600}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opts button{text-align:left;font-weight:500}
+.opts button.ok{background:#2a7a2a;animation:pop .4s}
+.opts button.ko{background:#8a2a3a;animation:shake .3s}
+.why{display:none;margin-top:6px;color:var(--mut);border-left:3px solid var(--lime);padding-left:10px}
+@keyframes pop{50%{transform:scale(1.03)}}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+/* surgery */
+.cards{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.cards button{font-family:Consolas,monospace;font-weight:500;border:1px solid #39428a}
+#prog{font-family:Consolas,monospace;font-size:.88rem;background:#0a0c1c;border:1px solid #2b3163;border-radius:10px;padding:8px 12px;min-height:40px;white-space:pre-wrap}
+#smsg{min-height:1.6em;font-weight:600;margin-top:8px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button.on{outline:2px solid var(--cyan)}
+.tabs button.done::after{content:" ✓";color:var(--lime)}
+/* checklist */
+details{background:var(--card2);border-radius:12px;padding:10px 14px;margin:8px 0;border:1px solid #333c80}
+summary{cursor:pointer;font-weight:700;font-family:Consolas,monospace;color:var(--yel)}
+details label{display:flex;gap:8px;align-items:flex-start;margin:6px 0;cursor:pointer}
+details input{margin-top:5px;accent-color:var(--lime)}
+.cnt{float:right;color:var(--mut);font-weight:400;font-size:.85rem}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:99}
+.float{position:fixed;z-index:98;font-weight:800;color:var(--lime);pointer-events:none;animation:up 1.1s forwards;text-shadow:0 2px 8px #000}
+@keyframes up{to{transform:translateY(-60px);opacity:0}}
+.badge{display:none;text-align:center;font-size:1.3rem;margin-top:16px;padding:18px;border-radius:14px;background:linear-gradient(90deg,#ff4fd830,#27e6ff30)}
+ul{padding-left:20px}
+.small{font-size:.85rem;color:var(--mut)}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div id="xpbar"><span>⚡ XP</span><div class="track"><div id="xpfill"></div></div><span id="xptxt">0</span><span id="rank"></span></div>
+
+<main>
+<header class="hero">
+  <h1>Structs &amp; listes chaînées</h1>
+  <div class="sub">Tout ce qu'il faut pour coder les 9 fonctions <span class="mono">ft_lst*</span> toi-même. Aucune solution ici : les exemples utilisent un autre type (<span class="mono">t_node</span>), le reste, c'est toi qui le codes.</div>
+  <nav class="toc">
+    <a href="#c1">1 · struct</a><a href="#c2">2 · auto-référence</a><a href="#c3">3 · void *</a><a href="#c4">4 · la liste</a><a href="#c5">5 · parcours</a><a href="#c6">6 · chirurgie</a><a href="#c7">7 · double pointeur</a><a href="#c8">8 · fonctions en param</a><a href="#c9">9 · free</a><a href="#c10">10 · checklist</a><a href="#boss">👹 boss</a><a href="#kit">🧪 tests</a>
+  </nav>
+</header>
+
+<!-- 1 -->
+<section id="c1">
+  <span class="tag">CHAPITRE 1</span>
+  <h2>Une struct, c'est un paquet de variables</h2>
+  <p>Une <code>struct</code> regroupe plusieurs variables (des <b>champs</b>) sous un seul nom. En mémoire, les champs sont <b>collés les uns après les autres</b>, dans l'ordre où tu les déclares.</p>
+<pre class="c">struct s_point
+{
+    int x;
+    int y;
+};
+
+struct s_point p;       // une variable de type "struct s_point"
+p.x = 3;
+p.y = 4;</pre>
+  <div class="mem">
+    <div class="cell"><b>p.x</b><span class="addr">0x7ffc00</span><br>3 (4 octets)</div>
+    <div class="cell"><b>p.y</b><span class="addr">0x7ffc04</span><br>4 (4 octets)</div>
+    <div class="cell"><b>sizeof(p)</b><br>8 octets au total</div>
+  </div>
+
+  <h3>typedef : un raccourci de nom</h3>
+  <p>Écrire <code>struct s_point</code> partout, c'est lourd. <code>typedef</code> crée un alias. La norme 42 veut <code>s_</code> pour la struct et <code>t_</code> pour le typedef.</p>
+<pre class="c">typedef struct s_point
+{
+    int x;
+    int y;
+}   t_point;            // maintenant "t_point" == "struct s_point"
+
+t_point p;</pre>
+
+  <h3>Le point <code>.</code> ou la flèche <code>-&gt;</code> ?</h3>
+  <table>
+    <tr><th>Tu as…</th><th>Tu écris</th><th>Ça veut dire</th></tr>
+    <tr><td>une struct <code>t_point p</code></td><td><code>p.x</code></td><td>le champ x de p</td></tr>
+    <tr><td>un pointeur <code>t_point *ptr</code></td><td><code>ptr-&gt;x</code></td><td>exactement <code>(*ptr).x</code> : va à l'adresse, prends le champ x</td></tr>
+  </table>
+  <div class="callout"><b>Règle simple :</b> à gauche du <code>.</code> il faut une struct, à gauche de <code>-&gt;</code> il faut un <b>pointeur</b> vers une struct. Avec les listes, tu manipules quasiment toujours des pointeurs, donc <code>-&gt;</code> partout.</div>
+  <div class="callout bad"><b>Piège de priorité :</b> <code>*ptr.x</code> se lit <code>*(ptr.x)</code>, ce qui ne compile pas. C'est justement pour ça que <code>-&gt;</code> existe.</div>
+
+  <div class="q" id="q1a" data-xp="10"><p>Q1. <code>t_point *a = &amp;p;</code> : comment mettre y à 10 via <code>a</code> ?</p>
+    <div class="opts"><button>a.y = 10;</button><button>*a.y = 10;</button><button data-ok>a-&gt;y = 10;</button><button>&amp;a-&gt;y = 10;</button></div>
+    <div class="why"><code>a</code> est un pointeur, donc <code>-&gt;</code>. L'autre forme valide serait <code>(*a).y = 10;</code>.</div></div>
+  <div class="q" id="q1b" data-xp="10"><p>Q2. <code>struct { char c; int n; }</code> : quel est son <code>sizeof</code> sur ta machine 64 bits ?</p>
+    <div class="opts"><button>5</button><button data-ok>8</button><button>16</button></div>
+    <div class="why"><b>Padding</b> : un <code>int</code> doit commencer à une adresse multiple de 4, donc le compilateur insère 3 octets vides après <code>c</code>. Moralité : utilise toujours <code>sizeof</code>, ne calcule jamais une taille à la main.</div></div>
+</section>
+
+<!-- 2 -->
+<section id="c2">
+  <span class="tag">CHAPITRE 2</span>
+  <h2>La struct qui pointe vers elle-même</h2>
+  <p>Voici ta struct du sujet :</p>
+<pre class="c">typedef struct s_list
+{
+    void            *content;   // la donnée (n'importe quoi)
+    struct s_list   *next;      // l'adresse du maillon suivant
+}   t_list;</pre>
+  <p>Deux détails sont essentiels :</p>
+  <ul>
+    <li><b><code>next</code> est un pointeur.</b> Une struct ne peut pas <i>contenir</i> une struct du même type, sinon sa taille serait infinie (elle contiendrait une struct qui en contient une, qui en contient une…). Un pointeur, en revanche, fait toujours 8 octets.</li>
+    <li><b>On écrit <code>struct s_list *next</code> et pas <code>t_list *next</code></b>, parce qu'à l'intérieur des accolades, le typedef <code>t_list</code> n'existe pas encore : il n'est créé qu'à la ligne <code>} t_list;</code>.</li>
+  </ul>
+  <div class="mem">
+    <div class="cell"><b>content</b><span class="addr">+0</span>void * : 8 octets</div>
+    <div class="cell"><b>next</b><span class="addr">+8</span>struct s_list * : 8 octets</div>
+    <div class="cell"><b>sizeof(t_list)</b><br>16 octets</div>
+  </div>
+
+  <div class="q" id="q2a" data-xp="15"><p>Q3. Ce header compile-t-il ?</p>
+<pre class="c">t_list  *ft_lstnew(void *content);
+
+typedef struct s_list
+{
+    void            *content;
+    struct s_list   *next;
+}   t_list;</pre>
+    <div class="opts"><button>Oui, le compilateur lit tout le fichier avant de compiler</button><button data-ok>Non : <code>t_list</code> est utilisé avant d'être défini</button><button>Oui, mais seulement avec -Wall</button></div>
+    <div class="why">Le C se lit <b>de haut en bas</b>. Au moment du prototype, <code>t_list</code> est un nom inconnu, donc erreur. Le typedef doit venir <b>avant</b> les prototypes qui l'utilisent. (👀 Va jeter un œil à ton <code>libft.h</code>…)</div></div>
+  <div class="q" id="q2b" data-xp="10"><p>Q4. Pourquoi <code>struct s_list next;</code> (sans étoile) ne compile pas ?</p>
+    <div class="opts"><button>Parce que <code>next</code> est un mot réservé</button><button data-ok>Taille infinie : la struct se contiendrait elle-même</button><button>Il faudrait écrire <code>t_list next;</code></button></div>
+    <div class="why">Le compilateur doit connaître la taille de la struct. Avec un pointeur, c'est 8 octets, point.</div></div>
+</section>
+
+<!-- 3 -->
+<section id="c3">
+  <span class="tag">CHAPITRE 3</span>
+  <h2><code>void *content</code> : la boîte qui accepte tout</h2>
+  <p><code>void *</code> = « une adresse, sans savoir ce qu'il y a derrière ». C'est ce qui rend ta liste <b>générique</b> : le même <code>t_list</code> peut stocker des <code>int *</code>, des <code>char *</code>, des structs…</p>
+<pre class="c">int     n = 42;
+char    *s = "salut";
+
+void    *a = &amp;n;     // OK : n'importe quel pointeur se convertit en void *
+void    *b = s;      // OK
+
+*a;                  // ❌ interdit : on ne sait pas QUOI lire (1 octet ? 4 ? 8 ?)
+*(int *)a;           // ✅ 42 : on dit au compilateur "c'est un int *"
+((char *)b)[0];      // ✅ 's'</pre>
+  <div class="callout"><b>Conséquence clé :</b> tes fonctions <code>ft_lst*</code> ne savent <b>jamais</b> ce qu'il y a dans <code>content</code>. Elles ne peuvent ni l'afficher, ni le libérer correctement, ni le transformer toutes seules. C'est pour ça que <b>l'utilisateur leur passe des fonctions</b> (<code>del</code>, <code>f</code>) : lui sait ce que c'est. On y revient au chapitre 8.</div>
+  <div class="callout bad"><b>Attention :</b> <code>ft_lstnew</code> ne <b>copie pas</b> le contenu. Elle stocke l'adresse telle quelle. Si tu lui passes l'adresse d'une variable locale qui disparaît ensuite, ton maillon pointe dans le vide.</div>
+
+  <div class="q" id="q3a" data-xp="10"><p>Q5. <code>node-&gt;content</code> contient l'adresse d'un <code>int</code>. Comment lire la valeur ?</p>
+    <div class="opts"><button>*node-&gt;content</button><button>(int)node-&gt;content</button><button data-ok>*(int *)node-&gt;content</button></div>
+    <div class="why">On caste d'abord le <code>void *</code> en <code>int *</code>, puis on déréférence. <code>(int)node-&gt;content</code> transformerait l'<i>adresse</i> elle-même en nombre (et tronquerait 8 octets en 4).</div></div>
+</section>
+
+<!-- 4 -->
+<section id="c4">
+  <span class="tag">CHAPITRE 4</span>
+  <h2>La liste chaînée : un jeu de piste</h2>
+  <p>Un tableau, c'est des cases <b>collées</b> en mémoire. Une liste chaînée, c'est des maillons <b>éparpillés n'importe où</b> (chacun vient de son propre <code>malloc</code>), où chacun connaît l'adresse du suivant. Le dernier pointe vers <code>NULL</code>, c'est le panneau « fin ».</p>
+  <div class="lst" id="demoList"></div>
+  <table>
+    <tr><th></th><th>Tableau</th><th>Liste chaînée</th></tr>
+    <tr><td>Accès au n-ième</td><td>direct : <code>tab[n]</code></td><td>il faut suivre n flèches</td></tr>
+    <tr><td>Ajouter au début</td><td>décaler tout le monde</td><td>2 flèches à modifier</td></tr>
+    <tr><td>Taille</td><td>fixée au malloc</td><td>grandit/rétrécit à volonté</td></tr>
+    <tr><td>Connaître la taille</td><td>tu la stockes</td><td>il faut compter en parcourant</td></tr>
+  </table>
+  <h3>Le vocabulaire</h3>
+  <ul>
+    <li><b>Maillon / nœud</b> : un <code>t_list</code> alloué.</li>
+    <li><b>Tête</b> (<i>head</i>) : le pointeur vers le premier maillon. <b>C'est la seule chose que tu gardes</b> : perdre la tête, c'est perdre toute la liste.</li>
+    <li><b>Liste vide</b> : la tête vaut <code>NULL</code>. C'est une liste parfaitement valide, et tes fonctions doivent la gérer.</li>
+  </ul>
+
+  <h3>Fabriquer une liste à la main (sans malloc, pour comprendre)</h3>
+<pre class="c">typedef struct s_node
+{
+    int             value;
+    struct s_node   *next;
+}   t_node;
+
+t_node  c = {2, NULL};
+t_node  b = {7, &amp;c};
+t_node  a = {3, &amp;b};
+t_node  *head = &amp;a;      // head -> a -> b -> c -> NULL
+
+head-&gt;value;              // 3
+head-&gt;next-&gt;value;        // 7
+head-&gt;next-&gt;next-&gt;next;   // NULL</pre>
+  <p class="small">Dans la vraie vie (et dans <code>ft_lstnew</code>), chaque maillon vient d'un <code>malloc</code> pour survivre à la fin de la fonction qui l'a créé.</p>
+
+  <div class="q" id="q4a" data-xp="15"><p>Q6. Pour allouer UN maillon, lequel est correct ?</p>
+    <div class="opts"><button>malloc(sizeof(t_node *))</button><button data-ok>malloc(sizeof(t_node))</button><button>malloc(sizeof(t_node) + sizeof(t_node *))</button></div>
+    <div class="why"><code>sizeof(t_node *)</code> = taille d'un <b>pointeur</b> (8 octets), alors qu'il faut la taille de la <b>struct</b>. C'est un bug classique, invisible sans valgrind/fsanitize : tu écris hors de ta zone.</div></div>
+  <div class="q" id="q4b" data-xp="10"><p>Q7. Avec la liste ci-dessus, que vaut <code>head-&gt;next-&gt;next-&gt;value</code> ?</p>
+    <div class="opts"><button>3</button><button>7</button><button data-ok>2</button><button>segfault</button></div>
+    <div class="why">head → a(3), -&gt;next → b(7), -&gt;next → c(2). Chaque <code>-&gt;next</code> = « avance d'un maillon ».</div></div>
+</section>
+
+<!-- 5 -->
+<section id="c5">
+  <span class="tag">CHAPITRE 5</span>
+  <h2>Parcourir : le curseur qui avance</h2>
+  <p>On ne peut pas faire <code>list[i]</code>. Pour visiter chaque maillon, on prend un <b>curseur</b> qui part de la tête et saute de maillon en maillon. Exemple : <b>sommer les valeurs</b>. Avance pas à pas et regarde <code>cur</code> bouger.</p>
+  <div class="row"><input type="text" id="stIn" value="3 7 2"><button id="stBuild">Construire</button><span class="small">(valeurs séparées par des espaces, vide = liste vide)</span></div>
+  <div class="grid2">
+    <pre id="stCode"></pre>
+    <div><div class="lst" id="stList"></div><div class="vars" id="stVars"></div></div>
+  </div>
+  <div class="row"><button id="stPrev">◀</button><button id="stNext" class="go">Pas suivant ▶</button><button id="stAuto">▶▶ Auto</button><button id="stReset">↺</button></div>
+  <div id="stExp" class="callout">Clique « Pas suivant ».</div>
+  <div id="stepGame" data-xp="15" style="display:none"></div>
+  <div class="callout"><b>Pourquoi un curseur et pas <code>head</code> directement ?</b> Si tu fais avancer <code>head</code>, tu perds le début de la liste. Dans une fonction qui reçoit <code>t_list *lst</code> (une <b>copie</b> du pointeur), avancer <code>lst</code> lui-même ne casse rien chez l'appelant. On voit ça au chapitre 7.</div>
+  <div class="callout bad"><b>À méditer (sans réponse ici 😉) :</b> à la fin de cette boucle, <code>cur</code> vaut <code>NULL</code>, donc tu as « dépassé » le dernier maillon. Si une de tes fonctions a besoin de <b>s'arrêter SUR le dernier maillon</b>, que dois-tu changer dans la condition ? Et que se passe-t-il alors si la liste est vide ? Teste ta réponse dans ta tête avec le stepper.</div>
+</section>
+
+<!-- 6 -->
+<section id="c6">
+  <span class="tag">CHAPITRE 6 · JEU</span>
+  <h2>Chirurgie de pointeurs 🔪</h2>
+  <p>Tout le métier des listes tient en ça : <b>modifier des flèches dans le bon ordre</b> sans perdre de maillon. Clique les instructions dans l'ordre que tu veux : elles s'exécutent en direct. Tu peux réutiliser une carte, et les cartes pièges existent.</p>
+  <div class="small">Légende : <span style="color:var(--red)">bordure rouge</span> = maillon perdu (fuite mémoire), <span style="opacity:.5">pointillés</span> = maillon libéré.</div>
+  <div class="tabs" id="sTabs"></div>
+  <h3 id="sTitle"></h3>
+  <div id="sGoal" class="small"></div>
+  <div class="lst" id="sList"></div>
+  <div class="vars" id="sVars"></div>
+  <div class="cards" id="sCards"></div>
+  <div id="prog"></div>
+  <div class="row"><button class="go" id="sCheck">✔ Valider</button><button id="sReset">↺ Recommencer</button></div>
+  <div id="smsg"></div>
+  <div id="surgery" data-xp="0" style="display:none"></div>
+  <div class="callout"><b>La leçon :</b> avant d'écraser une flèche, demande-toi « est-ce que quelqu'un d'autre pointe encore vers ce qu'elle désignait ? ». Si non, <b>sauvegarde d'abord</b> l'adresse dans une variable temporaire.</div>
+</section>
+
+<!-- 7 -->
+<section id="c7">
+  <span class="tag">CHAPITRE 7</span>
+  <h2>Pourquoi <code>t_list **lst</code> ? (le double pointeur)</h2>
+  <p>En C, <b>tout est passé par copie</b>. Si tu passes un pointeur à une fonction, elle reçoit une <b>copie de l'adresse</b>. Elle peut modifier ce qui est <i>pointé</i>, mais pas le pointeur de l'appelant.</p>
+  <div class="grid2">
+<pre class="c">// Version 1
+void reset(t_node *h)
+{
+    h = NULL;
+}
+// dans main :
+reset(head);</pre>
+<pre class="c">// Version 2
+void reset(t_node **h)
+{
+    *h = NULL;
+}
+// dans main :
+reset(&amp;head);</pre>
+  </div>
+  <div class="row"><button id="dp1">▶ Exécuter version 1</button><button id="dp2">▶ Exécuter version 2</button></div>
+  <div class="mem">
+    <div class="cell"><b>main : head</b><span class="addr">@ 0x7ff0</span><span id="dpHead" class="mono">0x1000 (→ maillon A)</span></div>
+    <div class="cell"><b>reset : h</b><span class="addr">@ 0x7fd0</span><span id="dpH" class="mono">—</span></div>
+  </div>
+  <div id="dpMsg" class="callout">Lance une version.</div>
+  <div class="callout ok"><b>Règle à retenir :</b> si une fonction doit pouvoir <b>changer QUEL maillon est la tête</b> (ajouter devant, ajouter dans une liste vide, tout vider et remettre à NULL…), elle a besoin de l'<b>adresse de la tête</b>, donc <code>t_list **</code>. Si elle ne fait que lire ou modifier les contenus, <code>t_list *</code> suffit.</div>
+  <p>Avec <code>t_list **lst</code> :</p>
+  <table>
+    <tr><th>Expression</th><th>Type</th><th>C'est quoi</th></tr>
+    <tr><td><code>lst</code></td><td><code>t_list **</code></td><td>l'adresse de la variable tête de l'appelant</td></tr>
+    <tr><td><code>*lst</code></td><td><code>t_list *</code></td><td>la tête elle-même (le 1er maillon, ou NULL)</td></tr>
+    <tr><td><code>(*lst)-&gt;next</code></td><td><code>t_list *</code></td><td>le 2e maillon. <b>Parenthèses obligatoires</b> : <code>*lst-&gt;next</code> = <code>*(lst-&gt;next)</code> ❌</td></tr>
+  </table>
+  <div class="q" id="q7a" data-xp="15"><p>Q8. Dans une fonction avec <code>t_list **lst</code>, la liste est vide. Que vaut quoi ?</p>
+    <div class="opts"><button><code>lst == NULL</code></button><button data-ok><code>*lst == NULL</code> (et <code>lst</code> est une adresse valide)</button><button>les deux sont forcément NULL</button></div>
+    <div class="why">Liste vide = la <b>tête</b> vaut NULL, donc <code>*lst == NULL</code>. <code>lst</code> lui-même, c'est <code>&amp;head</code> : une adresse valide. (<code>lst == NULL</code> serait un appel bizarre, mais rien ne t'empêche de t'en protéger.)</div></div>
+  <div class="q" id="q7b" data-xp="10"><p>Q9. <code>*lst-&gt;next</code>, le compilateur le lit comme…</p>
+    <div class="opts"><button>(*lst)-&gt;next</button><button data-ok>*(lst-&gt;next)</button></div>
+    <div class="why"><code>-&gt;</code> est plus prioritaire que <code>*</code>. Et <code>lst-&gt;next</code> n'a pas de sens sur un <code>t_list **</code>, donc erreur de compilation. Mets des parenthèses.</div></div>
+</section>
+
+<!-- 8 -->
+<section id="c8">
+  <span class="tag">CHAPITRE 8</span>
+  <h2>Les fonctions passées aux listes</h2>
+  <p>Tu connais déjà les pointeurs de fonction (<code>ft_strmapi</code>). Ici, il y en a trois formes, et elles ont toutes <code>void *</code>, parce que la liste ne sait pas ce qu'il y a dedans :</p>
+  <table>
+    <tr><th>Paramètre</th><th>Reçoit</th><th>Renvoie</th><th>Rôle</th></tr>
+    <tr><td><code>void (*del)(void *)</code></td><td>un <b>content</b></td><td>rien</td><td>libérer un contenu (l'utilisateur sait comment)</td></tr>
+    <tr><td><code>void (*f)(void *)</code></td><td>un <b>content</b></td><td>rien</td><td>agir sur un contenu « sur place »</td></tr>
+    <tr><td><code>void *(*f)(void *)</code></td><td>un <b>content</b></td><td>un <b>nouveau</b> content</td><td>produire une version transformée</td></tr>
+  </table>
+  <div class="callout bad"><b>Erreur n°1 :</b> ces fonctions reçoivent le <b>content</b>, pas le maillon. On passe <code>node-&gt;content</code>, jamais <code>node</code>.</div>
+  <h3>Exemples de fonctions qu'un <i>utilisateur</i> de ta lib pourrait passer</h3>
+<pre class="c">// pour del : libérer un content qui est un simple malloc
+free                                  // void free(void *) : même signature !
+
+// pour del : content = struct qui contient elle-même un malloc
+void    del_user(void *p)
+{
+    free(((t_user *)p)-&gt;name);
+    free(p);
+}
+
+// pour f (iter) : modifier sur place
+void    add_one(void *p)
+{
+    *(int *)p += 1;
+}
+
+// pour f (map) : fabriquer un NOUVEAU contenu, sans toucher l'ancien
+void    *square(void *p)
+{
+    int *res = malloc(sizeof(int));
+    if (res)
+        *res = *(int *)p * *(int *)p;
+    return (res);
+}</pre>
+  <div class="q" id="q8a" data-xp="10"><p>Q10. Laquelle peut être passée directement comme <code>del</code> ?</p>
+    <div class="opts"><button><code>void del_int(int *p)</code></button><button data-ok><code>void free(void *ptr)</code></button><button><code>void *clean(void *p)</code></button><button><code>int del(void *p)</code></button></div>
+    <div class="why">La signature doit être <b>exactement</b> <code>void (void *)</code>. <code>int *</code> au lieu de <code>void *</code>, ou un type de retour différent, c'est un type de fonction différent (warning, et comportement indéfini).</div></div>
+  <div class="q" id="q8b" data-xp="15"><p>Q11. Pourquoi <code>ft_lstmap</code> a-t-elle besoin de <code>del</code> alors qu'elle sert à <i>créer</i> une liste ?</p>
+    <div class="opts"><button>Pour libérer l'ancienne liste au passage</button><button data-ok>Pour nettoyer ce qu'elle a déjà construit si une allocation échoue en cours de route</button><button>Pour libérer le résultat de f à chaque tour</button></div>
+    <div class="why">Si le 5e <code>malloc</code> échoue, les 4 premiers maillons (et leurs contenus) doivent être libérés avant de renvoyer NULL, sinon fuite. L'ancienne liste, elle, n'appartient pas à lstmap : on n'y touche pas. Et pense à <b>tous</b> les malloc d'un tour : qui a alloué quoi, qui le libère si l'étape suivante rate ?</div></div>
+</section>
+
+<!-- 9 -->
+<section id="c9">
+  <span class="tag">CHAPITRE 9</span>
+  <h2>Libérer sans exploser 💥</h2>
+  <p>Un maillon possède <b>deux</b> zones mémoire distinctes :</p>
+  <div class="mem">
+    <div class="cell"><b>le maillon</b>alloué par <code>ft_lstnew</code><br>→ libéré par <code>free</code></div>
+    <div class="cell"><b>le content</b>alloué par l'utilisateur (ou pas !)<br>→ libéré par <code>del</code></div>
+  </div>
+  <h3>Les 3 règles d'or</h3>
+  <ul>
+    <li><b>Après <code>free(x)</code>, tu ne touches plus à <code>x-&gt;quoi_que_ce_soit</code>.</b> Même si « ça marche » chez toi, c'est un use-after-free.</li>
+    <li><b>Ce dont tu as besoin plus tard, sauvegarde-le AVANT de libérer.</b></li>
+    <li><b>Un pointeur libéré qui reste accessible = un piège.</b> Si l'appelant peut encore s'en servir, mets-le à <code>NULL</code> (et pour modifier le pointeur de l'appelant… chapitre 7).</li>
+  </ul>
+  <div class="q" id="q9a" data-xp="15"><p>Q12. Ce code libère un tableau de 3 chaînes stocké dans une struct. Où est le bug ?</p>
+<pre class="c">free(box);
+free(box-&gt;strs[0]);
+free(box-&gt;strs[1]);
+free(box-&gt;strs[2]);
+free(box-&gt;strs);</pre>
+    <div class="opts"><button>Il manque un free</button><button data-ok>On lit <code>box-&gt;strs</code> après avoir libéré <code>box</code></button><button>Aucun bug</button></div>
+    <div class="why">Il faut libérer de l'intérieur vers l'extérieur : d'abord ce qui est <i>pointé par</i> box, puis box. Même logique pour un maillon et son content… et pour un maillon et son <code>next</code>.</div></div>
+  <div class="q" id="q9b" data-xp="15"><p>Q13. On veut libérer <code>t_node *n</code> puis continuer avec le suivant. Lequel est correct ?</p>
+    <div class="opts"><button>free(n); n = n-&gt;next;</button><button data-ok>tmp = n-&gt;next; free(n); n = tmp;</button><button>n = n-&gt;next; free(n);</button></div>
+    <div class="why">Option 1 : use-after-free. Option 3 : on libère le <i>suivant</i>, et l'ancien est perdu (fuite). Option 2 : sauvegarde, libère, avance.</div></div>
+  <div class="callout"><b>Outils pour vérifier :</b> <code>cc -Wall -Wextra -Werror -g -fsanitize=address</code> détecte les use-after-free et les débordements. <code>valgrind --leak-check=full ./a.out</code> détecte les fuites (à ne pas combiner avec fsanitize).</div>
+</section>
+
+<!-- 10 -->
+<section id="c10">
+  <span class="tag">CHAPITRE 10</span>
+  <h2>Checklist : les questions à te poser pour chaque fonction</h2>
+  <p>Pas de réponses : juste les questions que la moulinette et les correcteurs vont te poser. Coche quand tu sais y répondre <b>et</b> que ton code le gère.</p>
+  <div id="checklist"></div>
+</section>
+
+<!-- BOSS -->
+<section id="boss">
+  <span class="tag boss">BOSS FINAL 👹</span>
+  <h2>Prouve que t'es prêt</h2>
+  <div class="q" id="b1" data-xp="20"><p>B1. <code>ft_lstdelone(node, free);</code> Juste après, peut-on lire <code>node-&gt;next</code> ?</p>
+    <div class="opts"><button>Oui, delone ne touche pas à next</button><button data-ok>Non : le maillon lui-même a été libéré</button><button>Oui si del vaut free</button></div>
+    <div class="why">« Ne libère pas next » veut dire que le maillon <i>suivant</i> survit, mais <code>node</code> lui-même est libéré, donc lire son champ <code>next</code> est interdit. Si tu en as besoin : avant.</div></div>
+  <div class="q" id="b2" data-xp="20"><p>B2. Pourquoi <code>ft_lstsize</code> et <code>ft_lstiter</code> prennent-elles <code>t_list *</code> et pas <code>t_list **</code> ?</p>
+    <div class="opts"><button>Pour aller plus vite</button><button data-ok>Elles ne changent jamais quel maillon est la tête</button><button>Parce qu'elles ne font pas de malloc</button></div>
+    <div class="why">Lire ou modifier des contenus ne change pas la tête. Une copie du pointeur suffit, et tu peux même l'avancer librement.</div></div>
+  <div class="q" id="b3" data-xp="20"><p>B3. <code>ft_lstiter(lst, f)</code> avec <code>f = add_one</code> sur une liste d'int. La liste après ?</p>
+    <div class="opts"><button>Inchangée, iter renvoie une nouvelle liste</button><button data-ok>Les mêmes maillons, avec chaque int incrémenté</button><button>Des nouveaux maillons</button></div>
+    <div class="why">iter applique f <b>sur place</b>. C'est map qui fabrique une nouvelle liste et laisse l'originale intacte.</div></div>
+  <div class="q" id="b4" data-xp="20"><p>B4. <code>t_list *a = ft_lstnew("hello");</code> puis <code>ft_lstclear(&amp;a, free);</code>. Que se passe-t-il ?</p>
+    <div class="opts"><button>Tout est libéré proprement</button><button data-ok>Crash/UB : on fait free sur une chaîne littérale qui n'a jamais été malloc</button><button>Fuite mémoire</button></div>
+    <div class="why">Le content n'a pas été alloué. <code>del</code> doit correspondre à la façon dont le content a été créé. C'est la responsabilité de l'<b>appelant</b>, pas de ta lib, mais il faut le comprendre.</div></div>
+  <div class="q" id="b5" data-xp="20"><p>B5. Tu ajoutes 10 000 éléments un par un avec <code>ft_lstadd_back</code>. Pourquoi c'est lent ?</p>
+    <div class="opts"><button>malloc est lent</button><button data-ok>Chaque ajout reparcourt toute la liste pour trouver la fin : environ n²/2 sauts</button><button>Ce n'est pas lent</button></div>
+    <div class="why">Pas de pointeur vers la fin dans <code>t_list</code>, donc il faut la rechercher à chaque fois. Bon à savoir pour lstmap : en gardant toi-même un pointeur sur le dernier maillon construit, tu évites ce coût.</div></div>
+  <div class="q" id="b6" data-xp="20"><p>B6. <code>void (*f)(void *)</code> contre <code>void *(*f)(void *)</code> : la différence ?</p>
+    <div class="opts"><button>Aucune</button><button data-ok>Le 1er renvoie rien, le 2e renvoie un <code>void *</code></button><button>Le 2e prend un pointeur de pointeur</button></div>
+    <div class="why">L'étoile collée à <code>void</code> fait partie du <b>type de retour</b>. Le <code>(*f)</code> entre parenthèses, c'est ce qui fait de f un pointeur de fonction.</div></div>
+  <div class="badge" id="badge">👑 <b>Maître des listes chaînées</b> 👑<br><span class="small">Toutes les quêtes sont finies. Va coder les 9 fonctions, puis passe le kit de test ci-dessous.</span></div>
+</section>
+
+<!-- KIT -->
+<section id="kit">
+  <span class="tag">🧪 KIT DE TEST</span>
+  <h2>Un main pour vérifier tes fonctions</h2>
+  <p>À lancer <b>une fois que tu as tout codé</b>. Compile avec <code>cc -Wall -Wextra -Werror -g -fsanitize=address main.c libft.a</code>, puis refais un test avec valgrind sans fsanitize.</p>
+<pre class="c">#include "libft.h"
+#include &lt;stdio.h&gt;
+
+void    *new_int(int v)
+{
+    int *p = malloc(sizeof(int));
+    if (p)
+        *p = v;
+    return (p);
+}
+
+void    print_int(void *c)      { printf("%d -> ", *(int *)c); }
+void    add_ten(void *c)        { *(int *)c += 10; }
+void    *times_two(void *c)     { return (new_int(*(int *)c * 2)); }
+
+void    show(char *name, t_list *l)
+{
+    printf("%s: ", name);
+    ft_lstiter(l, print_int);
+    printf("NULL (size %u)\n", ft_lstsize(l));
+}
+
+int main(void)
+{
+    t_list  *l = NULL;
+    t_list  *m;
+
+    show("vide", l);                              // vide: NULL (size 0)
+    printf("last(vide) = %p\n", (void *)ft_lstlast(l)); // (nil) ou 0x0
+    ft_lstadd_back(&amp;l, ft_lstnew(new_int(2)));     // add_back sur liste vide !
+    ft_lstadd_front(&amp;l, ft_lstnew(new_int(1)));
+    ft_lstadd_back(&amp;l, ft_lstnew(new_int(3)));
+    show("l", l);                                 // l: 1 -> 2 -> 3 -> NULL (size 3)
+    printf("last = %d\n", *(int *)ft_lstlast(l)-&gt;content);  // last = 3
+    ft_lstiter(l, add_ten);
+    show("l", l);                                 // l: 11 -> 12 -> 13 -> NULL (size 3)
+    m = ft_lstmap(l, times_two, free);
+    show("m", m);                                 // m: 22 -> 24 -> 26 -> NULL (size 3)
+    show("l", l);                                 // l inchangée : 11 -> 12 -> 13
+    ft_lstclear(&amp;l, free);
+    ft_lstclear(&amp;m, free);
+    printf("apres clear: %p %p\n", (void *)l, (void *)m);  // (nil) (nil)
+    return (0);
+}</pre>
+  <p class="small">Attendu : aucune erreur fsanitize, et « All heap blocks were freed » avec valgrind. Le kit ne teste pas les échecs de malloc : pour ça, demande-toi ce que fait ton code à chaque <code>malloc</code> qui renverrait NULL.</p>
+</section>
+</main>
+
+<script>
+/* ---------- storage (safe) ---------- */
+const S={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const $=id=>document.getElementById(id);
+
+/* ---------- C highlighter ---------- */
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function hl(src){
+  const re=/(\/\*[\s\S]*?\*\/|\/\/[^\n]*)|("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*')|\b(if|while|return|else|typedef|struct|sizeof|NULL|for|include)\b|\b(int|char|void|t_node|t_list|t_point|t_user|size_t|unsigned)\b|\b(\d+)\b|\b([A-Za-z_]\w*)(?=\s*\()/g;
+  let out='',last=0,m;
+  while((m=re.exec(src))){out+=esc(src.slice(last,m.index));const c=m[1]?'cm':m[2]?'nu':m[3]?'kw':m[4]?'ty':m[5]?'nu':'fn';out+='<span class="'+c+'">'+esc(m[0])+'</span>';last=re.lastIndex}
+  return out+esc(src.slice(last));
+}
+document.querySelectorAll('pre.c').forEach(p=>p.innerHTML=hl(p.textContent));
+
+/* ---------- XP ---------- */
+const KEY='lst_course_xp_v1';
+const got=S.get(KEY)||{};
+const quests=[...document.querySelectorAll('[data-xp]')];
+const SURG_XP=60; // 3 tasks x 20
+const TOTAL=quests.reduce((a,e)=>a+(+e.dataset.xp),0)+SURG_XP;
+const RANKS=[[0,'🥚 Pointeur sauvage'],[.2,'🔗 Maillon'],[.45,'🚶 Parcoureur'],[.7,'🔪 Chirurgien'],[.95,'👑 Maître des listes']];
+function bar(){
+  const x=Object.values(got).reduce((a,b)=>a+b,0);
+  $('xpfill').style.width=Math.min(100,100*x/TOTAL)+'%';
+  $('xptxt').textContent=x+' / '+TOTAL;
+  $('rank').textContent=RANKS.filter(r=>x/TOTAL>=r[0]).pop()[1];
+  return x;
+}
+const allIds=()=>[...quests.filter(e=>+e.dataset.xp>0).map(e=>e.id),'s1','s2','s3'];
+function award(id,xp,el){
+  if(got[id]!=null)return;
+  got[id]=xp;S.set(KEY,got);bar();
+  if(el){const r=el.getBoundingClientRect();const f=document.createElement('div');f.className='float';f.textContent='+'+xp+' XP';f.style.left=(r.left+r.width/2-30)+'px';f.style.top=(r.top-10)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),1200)}
+  if(allIds().every(i=>got[i]!=null)){confetti(220);$('badge').style.display='block'}else confetti(40);
+}
+
+/* ---------- confetti ---------- */
+const cv=$('confetti'),cx=cv.getContext('2d');let parts=[],running=false;
+function confetti(n){
+  cv.width=innerWidth;cv.height=innerHeight;
+  const cols=['#ff4fd8','#27e6ff','#b6ff3b','#ffd23f'];
+  for(let i=0;i<n;i++)parts.push({x:innerWidth/2,y:innerHeight/3,vx:(Math.random()-.5)*14,vy:Math.random()*-12-2,c:cols[i%4],s:Math.random()*6+3,l:90+Math.random()*40});
+  if(!running){running=true;requestAnimationFrame(tick)}
+}
+function tick(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  parts=parts.filter(p=>p.l-->0);
+  parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.35;cx.fillStyle=p.c;cx.fillRect(p.x,p.y,p.s,p.s)});
+  if(parts.length)requestAnimationFrame(tick);else{running=false;cx.clearRect(0,0,cv.width,cv.height)}
+}
+
+/* ---------- quizzes ---------- */
+document.querySelectorAll('.q').forEach(q=>{
+  let miss=false;
+  const ok=q.querySelector('[data-ok]');
+  if(got[q.id]!=null){ok.classList.add('ok');q.classList.add('done');q.querySelector('.why').style.display='block'}
+  q.querySelectorAll('.opts button').forEach(b=>b.onclick=()=>{
+    if(q.classList.contains('done'))return;
+    if(b===ok){b.classList.add('ok');q.classList.add('done');q.querySelector('.why').style.display='block';award(q.id,miss?Math.ceil(q.dataset.xp/2):+q.dataset.xp,b)}
+    else{b.classList.add('ko');miss=true}
+  });
+});
+
+/* ---------- list drawing ---------- */
+function drawList(el,items,opt={}){
+  // items: [{label, cls, ptr}] ; opt.nullCls, opt.nullPtr, opt.tail
+  el.innerHTML=items.map(it=>`<div class="nw">${it.ptr?`<span class="ptr">${it.ptr}</span>`:''}<div class="node ${it.cls||''}"><span class="c">${it.label}</span><span class="n">next</span></div></div><span class="arrow">→</span>`).join('')
+   +(opt.tail!=null?opt.tail:`<div class="nw">${opt.nullPtr?`<span class="ptr">${opt.nullPtr}</span>`:''}<span class="nul ${opt.nullCls||''}">NULL</span></div>`);
+}
+drawList($('demoList'),[{label:'3',ptr:'head'},{label:'7'},{label:'2'}]);
+
+/* ---------- stepper ---------- */
+const SL=['int     sum = 0;','t_node  *cur = head;','while (cur != NULL)','{','    sum += cur->value;','    cur = cur->next;','}','// fin'];
+$('stCode').innerHTML=SL.map(l=>'<span class="ln">'+hl(l)+'</span>').join('');
+const lines=[...$('stCode').querySelectorAll('.ln')];
+const addr=i=>'0x'+(0x1000+i*0x40).toString(16);
+let vals=[],steps=[],si=0,timer=null;
+function build(){
+  vals=$('stIn').value.trim().split(/\s+/).filter(Boolean).map(Number).filter(n=>!isNaN(n)).slice(0,8);
+  steps=[];let sum=0,c=-2;
+  steps.push({l:0,c,s:0,e:'sum démarre à 0.'});
+  c=vals.length?0:-1;
+  steps.push({l:1,c,s:0,e:'Le curseur part de la tête.'+(c<0?' La liste est vide : head vaut NULL, donc cur aussi.':'')});
+  for(;;){
+    steps.push({l:2,c,s:sum,e:c<0?'cur == NULL → condition fausse, on sort de la boucle.':'cur ≠ NULL → on entre dans la boucle.'});
+    if(c<0)break;
+    sum+=vals[c];
+    steps.push({l:4,c,s:sum,e:'On lit le champ value du maillon pointé : '+vals[c]+'. sum = '+sum+'.'});
+    c=c+1<vals.length?c+1:-1;
+    steps.push({l:5,c,s:sum,e:c<0?'cur prend la valeur du next du dernier maillon… c\'est NULL.':'cur saute au maillon suivant ('+addr(c)+').'});
+  }
+  steps.push({l:7,c,s:sum,e:'Terminé : sum = '+sum+'. Chaque maillon a été visité une seule fois.',end:1});
+  si=0;stop();render();
+}
+function render(){
+  const st=steps[si];
+  lines.forEach((l,i)=>l.classList.toggle('on',i===st.l));
+  drawList($('stList'),vals.map((v,i)=>({label:v,cls:st.c===i?'cur':'',ptr:(i===0?'head':'')+(st.c===i?(i===0?' cur':'cur'):'')})),{nullCls:st.c===-1?'cur':'',nullPtr:st.c===-1?'cur':''});
+  $('stVars').innerHTML=`<span>sum = ${st.l===0&&si===0?'0':st.s}</span><span>cur = ${st.c===-2?'?':st.c===-1?'NULL':addr(st.c)}</span>`;
+  $('stExp').textContent=st.e;
+  if(st.end&&vals.length>=2)award('stepGame',15,$('stNext'));
+}
+const stop=()=>{clearInterval(timer);timer=null;$('stAuto').textContent='▶▶ Auto'};
+$('stNext').onclick=()=>{if(si<steps.length-1){si++;render()}};
+$('stPrev').onclick=()=>{if(si>0){si--;render()}};
+$('stReset').onclick=()=>{si=0;stop();render()};
+$('stBuild').onclick=build;
+$('stAuto').onclick=()=>{if(timer)return stop();$('stAuto').textContent='⏸ Pause';timer=setInterval(()=>{if(si>=steps.length-1)return stop();si++;render()},800)};
+build();
+
+/* ---------- surgery ---------- */
+const TASKS=[
+ {id:'s1',title:'Mission 1 : insère X entre A et B',goal:'Objectif : head → A → X → B → C → NULL, sans perdre de maillon.',
+  init:()=>({n:{A:'B',B:'C',C:null,X:null},f:{},v:{head:'A',X:'X'}}),
+  cards:['head->next = X;','X->next = NULL;','X->next = head->next;','head->next->next = X;'],
+  want:['A','X','B','C'],free:[]},
+ {id:'s2',title:'Mission 2 : supprime B (le 2e maillon) et libère-le',goal:'Objectif : head → A → C → NULL, B libéré, aucune fuite.',
+  init:()=>({n:{A:'B',B:'C',C:null},f:{},v:{head:'A',tmp:null}}),
+  cards:['free(tmp);','head->next = head->next->next;','tmp = head->next;','head->next = tmp->next;'],
+  want:['A','C'],free:['B']},
+ {id:'s3',title:'Mission 3 : échange les deux premiers maillons',goal:'Objectif : head → B → A → C → NULL. (Oui, la tête change !)',
+  init:()=>({n:{A:'B',B:'C',C:null},f:{},v:{head:'A',tmp:null}}),
+  cards:['head = tmp;','tmp->next = head;','head = head->next;','tmp = head->next;','head->next = tmp->next;'],
+  want:['B','A','C'],free:[]}
+];
+let T=0,M,log=[],err=null;
+function evalExpr(e){
+  const parts=e.trim().split('->');
+  if(parts[0]==='NULL')return null;
+  let cur=M.v[parts[0]]??null;
+  for(let i=1;i<parts.length;i++){
+    if(cur===null)throw '💥 Segfault : '+parts.slice(0,i).join('->')+' vaut NULL, impossible de lire ->next.';
+    if(M.f[cur])throw '💥 Use-after-free : '+cur+' a déjà été libéré, tu ne peux plus lire son next.';
+    cur=M.n[cur];
+  }
+  return cur;
+}
+function exec(ins){
+  let m=ins.match(/^free\((\w+)\);$/);
+  if(m){const node=M.v[m[1]];if(node==null)return;if(M.f[node])throw '💥 Double free sur '+node+' !';M.f[node]=true;return}
+  m=ins.match(/^(.+?)\s*=\s*(.+);$/);
+  const val=evalExpr(m[2]);
+  const lhs=m[1].split('->');
+  if(lhs.length===1){M.v[lhs[0]]=val;return}
+  const owner=evalExpr(lhs.slice(0,-1).join('->'));
+  if(owner===null)throw '💥 Segfault : tu écris dans NULL->next.';
+  if(M.f[owner])throw '💥 Use-after-free : écriture dans '+owner+' déjà libéré.';
+  M.n[owner]=val;
+}
+function chain(){
+  const out=[],seen=new Set();let c=M.v.head,cycle=null;
+  while(c!=null){if(seen.has(c)){cycle=c;break}seen.add(c);out.push(c);if(M.f[c])break;c=M.n[c]}
+  return {out,cycle,endFreed:out.length&&M.f[out[out.length-1]]};
+}
+function reach(){
+  const r=new Set();
+  Object.values(M.v).forEach(s=>{let c=s;while(c!=null&&!r.has(c)){r.add(c);if(M.f[c])break;c=M.n[c]}});
+  return r;
+}
+function sRender(){
+  const t=TASKS[T];
+  $('sTitle').textContent=t.title;$('sGoal').textContent=t.goal;
+  const {out,cycle,endFreed}=chain(),r=reach();
+  const lost=Object.keys(M.n).filter(k=>!r.has(k)&&!M.f[k]);
+  const ptrOf=k=>Object.entries(M.v).filter(([,v])=>v===k).map(([n])=>n).join(' ');
+  let tail=cycle?`<span class="nul">↺ boucle infinie vers ${cycle}</span>`:endFreed?`<span class="nul">☠ chaîne cassée</span>`:null;
+  drawList($('sList'),out.map(k=>({label:k,cls:M.f[k]?'freed':'',ptr:ptrOf(k)})),{tail});
+  const others=Object.keys(M.n).filter(k=>!out.includes(k));
+  $('sVars').innerHTML=Object.entries(M.v).map(([n,v])=>`<span>${n} = ${v??'NULL'}</span>`).join('')
+    +others.map(k=>`<span style="border-color:${lost.includes(k)?'var(--red)':M.f[k]?'#555':'var(--cyan)'}">${k}${M.f[k]?' ☠ libéré':''}${lost.includes(k)?' 💧 PERDU':''} : next = ${M.n[k]??'NULL'}</span>`).join('');
+  $('prog').textContent=log.length?log.join('\n'):'// tes instructions apparaîtront ici';
+  $('sCards').innerHTML='';
+  t.cards.forEach(c=>{const b=document.createElement('button');b.textContent=c;b.disabled=!!err;b.onclick=()=>{try{exec(c);log.push(c)}catch(e){log.push(c+'   ← '+e);err=e}sRender();$('smsg').textContent=err||'';$('smsg').style.color='var(--red)'};$('sCards').appendChild(b)});
+  $('sTabs').innerHTML='';
+  TASKS.forEach((x,i)=>{const b=document.createElement('button');b.textContent='Mission '+(i+1);b.className=(i===T?'on ':'')+(got[x.id]!=null?'done':'');b.onclick=()=>{T=i;sReset()};$('sTabs').appendChild(b)});
+}
+function sReset(){M=TASKS[T].init();log=[];err=null;$('smsg').textContent='';sRender()}
+$('sReset').onclick=sReset;
+$('sCheck').onclick=()=>{
+  const t=TASKS[T],{out,cycle}=chain(),r=reach();
+  const lost=Object.keys(M.n).filter(k=>!r.has(k)&&!M.f[k]);
+  let msg,good=false;
+  if(err)msg='Le programme a crashé. Recommence.';
+  else if(cycle)msg='Ta liste boucle à l\'infini : un parcours ne s\'arrêterait jamais.';
+  else if(lost.length)msg='💧 Fuite : '+lost.join(', ')+' n\'est plus accessible par personne. Il fallait le sauvegarder avant.';
+  else if(out.some(k=>M.f[k]))msg='La liste contient un maillon libéré : prochain parcours = use-after-free.';
+  else if(out.join()!==t.want.join())msg='Pas encore : ta liste est '+(out.join(' → ')||'vide')+' → NULL.';
+  else if(t.free.some(k=>!M.f[k]))msg='La liste est bonne, mais '+t.free.filter(k=>!M.f[k]).join(', ')+' n\'est pas libéré : fuite à la fin du programme.';
+  else{good=true;msg='✅ Opération réussie en '+log.length+' instructions !'+(t.id==='s3'?' Remarque : tu as dû modifier head lui-même. Dans une fonction, ça exigerait… un t_list ** (chapitre suivant).':'')}
+  $('smsg').textContent=msg;$('smsg').style.color=good?'var(--lime)':'var(--yel)';
+  if(good){award(t.id,20,$('sCheck'));sRender()}
+};
+sReset();
+
+/* ---------- double pointer ---------- */
+let dpT=[];
+function dp(v){
+  dpT.forEach(clearTimeout);dpT=[];
+  $('dpHead').textContent='0x1000 (→ maillon A)';
+  $('dpH').textContent=v===1?'0x1000 (copie de head)':'0x7ff0 (adresse de head)';
+  $('dpMsg').textContent=v===1?'Appel : h reçoit une COPIE de la valeur de head (0x1000).':'Appel : h reçoit l\'ADRESSE de la variable head (0x7ff0).';
+  dpT.push(setTimeout(()=>{
+    if(v===1){$('dpH').textContent='NULL';$('dpMsg').innerHTML='<b>h = NULL;</b> modifie la copie locale. La fonction se termine, h disparaît… et <b>head vaut toujours 0x1000</b>. Raté.'}
+    else{$('dpHead').textContent='NULL';$('dpMsg').innerHTML='<b>*h = NULL;</b> écrit à l\'adresse 0x7ff0, c\'est-à-dire <b>dans head</b> lui-même. head vaut maintenant NULL. ✅'}
+  },1300));
+}
+$('dp1').onclick=()=>dp(1);$('dp2').onclick=()=>dp(2);
+
+/* ---------- checklist ---------- */
+const CL={
+ 'ft_lstnew':['Que renvoies-tu si malloc échoue ?','Quelle taille exacte passes-tu à malloc ? (chapitre 4, Q6)','content peut-il valoir NULL ? Est-ce un problème pour toi ?','Le next du nouveau maillon est-il bien initialisé ? (malloc ne met pas à zéro)'],
+ 'ft_lstadd_front':['Pourquoi lst est-il un t_list ** ici ?','Liste vide (*lst == NULL) : ton code marche-t-il sans cas spécial ?','Dans quel ordre modifies-tu les deux flèches ? (mission 1 et 3)','Et si new ou lst vaut NULL ?'],
+ 'ft_lstsize':['Liste vide → quel résultat ?','Ta boucle s\'arrête-t-elle sur le dernier maillon ou après ?'],
+ 'ft_lstlast':['Liste vide → quel résultat, et ta boucle ne segfault-elle pas avant ?','Quelle condition de boucle s\'arrête SUR le dernier ? (chapitre 5, « à méditer »)'],
+ 'ft_lstadd_back':['Liste vide : qui devient la tête, et comment la modifies-tu depuis la fonction ?','Peux-tu réutiliser une fonction que tu as déjà écrite ?','Et si new vaut NULL ?'],
+ 'ft_lstdelone':['Qui libère le content, qui libère le maillon, et dans quel ordre ?','Tu ne dois PAS toucher au maillon suivant : est-ce le cas ?','Et si lst ou del vaut NULL ?'],
+ 'ft_lstclear':['Que dois-tu sauvegarder avant chaque libération ? (Q13)','Peux-tu réutiliser ft_lstdelone ?','Que vaut le pointeur de l\'appelant à la fin, et comment le modifies-tu ?','Liste déjà vide → rien ne doit casser.'],
+ 'ft_lstiter':['f reçoit-elle bien le content, pas le maillon ?','Et si lst ou f vaut NULL ?'],
+ 'ft_lstmap':['La liste d\'origine reste-t-elle intacte ?','À chaque tour, combien d\'allocations y a-t-il (celle de f + celle du maillon) ?','Si la création du maillon échoue, le résultat de f qui vient d\'être alloué est-il libéré ?','Si ça échoue au milieu, tout ce qui a été construit est-il libéré avec del, et renvoies-tu NULL ?','Ajoutes-tu à la fin sans reparcourir toute la nouvelle liste à chaque fois ? (B5, bonus)']
+};
+const ck=S.get('lst_course_ck')||{};
+$('checklist').innerHTML=Object.entries(CL).map(([fn,qs])=>`<details><summary>${fn}<span class="cnt" data-fn="${fn}"></span></summary>${qs.map((q,i)=>`<label><input type="checkbox" data-k="${fn}-${i}" ${ck[fn+'-'+i]?'checked':''}><span>${esc(q)}</span></label>`).join('')}</details>`).join('');
+function cnt(){document.querySelectorAll('.cnt').forEach(c=>{const fn=c.dataset.fn,n=CL[fn].length,d=CL[fn].filter((_,i)=>ck[fn+'-'+i]).length;c.textContent=d+'/'+n+(d===n?' ✅':'')})}
+$('checklist').addEventListener('change',e=>{if(e.target.dataset.k){ck[e.target.dataset.k]=e.target.checked;S.set('lst_course_ck',ck);cnt()}});
+cnt();
+
+bar();
+if(allIds().every(i=>got[i]!=null))$('badge').style.display='block';
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Libft TODO</title>
+<style>
+  :root { --bg:#fff; --fg:#1f2328; --mut:#656d76; --line:#d0d7de; --ok:#1a7f37; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1e1e1e; --fg:#e6e6e6; --mut:#9aa0a6; --line:#3a3a3a; --ok:#3fb950; } }
+  body { background:var(--bg); color:var(--fg); font:15px/1.5 system-ui,sans-serif; max-width:760px; margin:0 auto; padding:24px 16px 64px; }
+  h1 { margin:0 0 4px; }
+  #bar { height:8px; background:var(--line); border-radius:4px; overflow:hidden; margin:8px 0 4px; }
+  #fill { height:100%; width:0; background:var(--ok); transition:width .2s; }
+  #count { color:var(--mut); font-size:13px; }
+  h2 { margin:28px 0 8px; font-size:17px; border-bottom:1px solid var(--line); padding-bottom:4px; }
+  label { display:flex; gap:10px; align-items:flex-start; padding:4px 0; cursor:pointer; }
+  input { margin-top:5px; accent-color:var(--ok); }
+  input:checked + span { color:var(--mut); text-decoration:line-through; }
+  code { background:rgba(127,127,127,.18); padding:1px 5px; border-radius:4px; font-size:13px; }
+  button { margin-top:24px; background:none; border:1px solid var(--line); color:var(--mut); padding:6px 12px; border-radius:6px; cursor:pointer; }
+</style>
+</head>
+<body>
+<h1>Libft : ce qu'il reste à faire</h1>
+<div id="bar"><div id="fill"></div></div>
+<div id="count"></div>
+<main id="root"></main>
+<button onclick="if(confirm('Tout décocher ?')){localStorage.removeItem(K);location.reload()}">Réinitialiser</button>
+
+<script>
+const K = 'libft-todo';
+const files = ['atoi','bzero','calloc','isalnum','isalpha','isascii','isdigit','isprint','memchr','memcmp','memcpy','memmove','memset','strchr','strdup','strlcat','strlcpy','strlen','strncmp','strnstr','strrchr','tolower','toupper'];
+const S = [
+ ['1. Global (bloque la compilation)', [
+  '<code>libft.h</code> : ajouter le header 42 en haut',
+  '<code>libft.h</code> : ajouter l\'include guard (<code>#ifndef</code> / <code># define</code> / <code>#endif</code> en bas)',
+  '<code>libft.h</code> : <code>ft_memcmp</code> renvoie <code>int</code>, pas <code>int *</code>',
+  ...files.map(f => 'Ajouter <code>#include "libft.h"</code> dans <code>ft_' + f + '.c</code>'),
+ ]],
+ ['2. Types des compteurs (warnings de signe avec -Werror)', [
+  'ft_bzero : <code>i</code> en <code>size_t</code>',
+  'ft_memchr : <code>i</code> en <code>size_t</code>',
+  'ft_memcmp : <code>i</code> en <code>size_t</code>',
+  'ft_memcpy : <code>i</code> en <code>size_t</code>',
+  'ft_memmove : <code>i</code> en <code>size_t</code> (la boucle à l\'envers ne peut plus utiliser <code>i &gt;= 0</code>)',
+  'ft_memset : <code>i</code> en <code>size_t</code>',
+  'ft_strlen : <code>i</code> en <code>size_t</code>',
+  'ft_strlcat : <code>dest_len</code>, <code>i</code>, <code>src_len</code> en <code>size_t</code>',
+  'ft_strlcpy : <code>i</code>, <code>srclen</code> en <code>size_t</code>',
+  'ft_strncmp : <code>i</code> en <code>size_t</code>',
+  'ft_strnstr : <code>i</code>, <code>j</code> en <code>size_t</code>',
+ ]],
+ ['3. Bugs de logique', [
+  '<b>ft_atoi</b> : le <code>i++</code> après le bloc du signe est hors du <code>if</code>, il saute un caractère même sans signe',
+  '<b>ft_atoi</b> : ignorer tous les espaces blancs (<code>\\t \\n \\v \\f \\r</code> + espace), pas seulement <code>\' \'</code>',
+  '<b>ft_memchr</b> : pointeur interne en <code>unsigned char</code>, et <code>c</code> converti en <code>unsigned char</code> avant la comparaison',
+  '<b>ft_strlcpy</b> : <code>size == 0</code> ne doit rien écrire (<code>size - 1</code> déborde en non signé)',
+  '<b>ft_strlcpy</b> : <code>dst[size] = \'\\0\'</code> écrit hors du buffer. Le <code>\'\\0\'</code> va à l\'indice où la copie s\'est arrêtée',
+  '<b>ft_strlcpy</b> : supprimer la boucle <code>while (dst[i])</code>, elle lit de la mémoire non initialisée',
+  '<b>ft_strrchr</b> : l\'indice 0 n\'est jamais testé. Vérifier aussi <code>c == \'\\0\'</code>',
+  '<b>ft_strnstr</b> : ajouter la borne <code>i + j &lt; len</code> dans la boucle interne',
+  '<b>ft_calloc</b> : protéger contre le dépassement de <code>count * size</code>',
+  '<b>ft_memcpy</b> : gérer <code>dst</code> et <code>src</code> tous deux NULL',
+ ]],
+ ['4. Vérifications finales', [
+  'Plus de <code>main</code> actif dans aucun <code>.c</code>',
+  'Compile : <code>cc -Wall -Wextra -Werror -c ft_*.c</code> sans warning',
+  '<code>norminette</code> sans erreur (attention à ft_memmove, limite des 25 lignes)',
+  'Créer le <code>Makefile</code> (<code>NAME</code>, <code>all</code>, <code>clean</code>, <code>fclean</code>, <code>re</code>, <code>-Wall -Wextra -Werror</code>, <code>ar rcs libft.a</code>)',
+  'Tester chaque fonction contre la libc (chaîne vide, <code>n = 0</code>, <code>c = 0</code>, <code>c &gt; 127</code>)',
+ ]],
+];
+
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem(K)) || {}; } catch (e) {}
+const root = document.getElementById('root');
+let id = 0;
+for (const [title, items] of S) {
+  const h = document.createElement('h2'); h.textContent = title; root.append(h);
+  for (const html of items) {
+    const key = 'i' + id++;
+    const l = document.createElement('label');
+    l.innerHTML = '<input type="checkbox"><span>' + html + '</span>';
+    const cb = l.firstChild; cb.checked = !!saved[key];
+    cb.onchange = () => {
+      saved[key] = cb.checked;
+      try { localStorage.setItem(K, JSON.stringify(saved)); } catch (e) {}
+      update();
+    };
+    root.append(l);
+  }
+}
+function update() {
+  const all = document.querySelectorAll('input'), n = [...all].filter(c => c.checked).length;
+  document.getElementById('fill').style.width = (100 * n / all.length) + '%';
+  document.getElementById('count').textContent = n + ' / ' + all.length;
+}
+update();
+</script>
+</body>
+</html>
