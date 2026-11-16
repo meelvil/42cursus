@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int	wordcount(char const *s, char c)
+static int	wordcount(char const *s, char c)
 {
 	int	i;
 	int	count;
@@ -33,7 +33,7 @@ int	wordcount(char const *s, char c)
 	return (count);
 }
 
-char	*wordsep(char const *s, size_t *i, char c)
+static char	*wordsep(char const *s, size_t *i, char c)
 {
 	char	*word;
 	size_t	start;
@@ -56,7 +56,7 @@ char	*wordsep(char const *s, size_t *i, char c)
 	return (word);
 }
 
-void	freesplit(char **splitted, int j)
+static void	freesplit(char **splitted, int j)
 {
 	while (j >= 0)
 	{

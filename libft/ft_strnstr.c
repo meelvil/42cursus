@@ -16,21 +16,21 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
 	size_t	i;
 	size_t	j;
-	char	*main;
-	char	*tofind;
+	char	*big_ptr;
+	char	*lit_ptr;
 
-	main = (char *) big;
-	tofind = (char *) little;
-	if (tofind[0] == '\0')
-		return (main);
+	big_ptr = (char *) big;
+	lit_ptr = (char *) little;
+	if (lit_ptr[0] == '\0')
+		return (big_ptr);
 	i = 0;
-	while (main[i] && i < len)
+	while (big_ptr[i] && i < len)
 	{
 		j = 0;
-		while (main[i + j] && j + i < len && main[i + j] == tofind[j])
+		while (big_ptr[i + j] && j + i < len && big_ptr[i + j] == lit_ptr[j])
 		{
-			if (tofind[j + 1] == '\0')
-				return (&main[i]);
+			if (lit_ptr[j + 1] == '\0')
+				return (&big_ptr[i]);
 			j++;
 		}
 		i++;
@@ -38,7 +38,7 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	return (0);
 }
 
-// int main(void)
+// int big_ptr(void)
 // {
 //     #include <stdio.h>
 

@@ -1,8 +1,8 @@
-This project has been created as part of the 42 curriculum by mbou-ani.
+*This project has been created as part of the 42 curriculum by mbou-ani.*
 
 # Description
 
-During the **libft** project, we needed to create our own library named *LIBFT* that will be used in .c files in order to use serveral functions. A library is a repository containing functions that we created ourselves. They can be used in any file and any program that *"includes"* this library. It means that on top of your files, you wrote *"include "libft.h""*. The program then knows where to look for specific calls that are made inside of it. There are a lot of existing libraries and they all works the same.
+During the **libft** project, we needed to create our own library named *LIBFT* that will be used in .c files in order to use several functions. A library is a repository containing functions that we created ourselves. They can be used in any file and any program that *"includes"* this library. It means that on top of your files, you wrote *"include "libft.h""*. The program then knows where to look for specific calls that are made inside of it. There are a lot of existing libraries and they all work the same.
 
 Brut example of usage : I have a box containing the instructions to fold a paper into an airplane. If I take a piece of paper without the instructions, I won't be able to know where to look for information, so I will stuck on the first step. If someone points the box in order to make me open it, I will be able to find the correct instructions on folding a paper sheet into an airplane. This is how libraries work.
 
@@ -67,9 +67,9 @@ The project is delivered with every *.c* files uncompiled, the *libft.h* file an
 
 It will create a lot of files as well named objects, having the .o extension. If you want to clean every files created during the compilation, you can run the command `make clean` and it will keep the **libft.a** file or `make fclean` and everything will be cleaned up, including the .a file.
 
-# Ressources
+# Resources
 
-During the project, i used official websites that delivers man description of certain functions. Some functions were new to me, so I asked AI to give me examples and the precise behavior of unknown functions. It helped on developping side, due to the fact that when you know what to expect from what you are coding, everything is easier and smoother. 
+During the project, I used official websites that delivers man description of certain functions. Some functions were new to me, so I asked AI to give me examples and the precise behavior of unknown functions. It helped on the writting side, due to the fact that when you know what to expect from what you are coding, everything is easier and smoother. 
 Although I knew a lot about fundamental notions around this project, some new knowledge came directly within reading man pages (such as the file descriptor).
 Finally, I took a look back at my Piscine's project, because some elements weren't in my head since then, so I needed a refresh. *(Makefile, .h)*
 For the chained list part, YouTube channel Neso academy helped me understand the basics about this notion.
