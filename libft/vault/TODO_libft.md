@@ -15,7 +15,7 @@ Coche en remplaçant `[ ]` par `[x]`.
   - [X] ft_isalpha
   - [X] ft_isascii
   - [X] ft_isdigit
-  - [X] ft_isprint
+  - [x] ft_isprint
   - [X] ft_memchr
   - [X] ft_memcmp
   - [X] ft_memcpy

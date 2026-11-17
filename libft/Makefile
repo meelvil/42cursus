@@ -6,13 +6,13 @@
 #    By: mbou-ani <mbou-ani@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/11/10 15:28:21 by mbou-ani          #+#    #+#              #
-#    Updated: 2026/11/12 09:21:16 by mbou-ani         ###   ########.fr        #
+#    Updated: 2026/11/17 11:07:01 by mbou-ani         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 # Compilation
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -MMD
 
 SOURCES = ft_atoi.c ft_lstadd_back.c ft_memchr.c ft_split.c ft_strncmp.c\
 		ft_bzero.c ft_lstadd_front.c ft_memcmp.c ft_strchr.c ft_strnstr.c\
@@ -25,6 +25,7 @@ SOURCES = ft_atoi.c ft_lstadd_back.c ft_memchr.c ft_split.c ft_strncmp.c\
 		ft_lstsize.c ft_putstr_fd.c ft_strmapi.c
 
 OBJECTS = $(SOURCES:.c=.o)
+DEPS = $(SOURCES:.c=.d)
 
 NAME = libft.a
 
@@ -32,7 +33,7 @@ HEADER = -I .
 
 all: $(NAME)
 
-%.o: %.c libft.h
+%.o: %.c Makefile
 	$(CC) $(CFLAGS) $(HEADER) -c $< -o $@
 
 $(NAME): $(OBJECTS)
@@ -41,9 +42,11 @@ $(NAME): $(OBJECTS)
 .PHONY: all clean fclean re
 
 clean :
-	rm -f $(OBJECTS)
+	rm -f $(OBJECTS) $(DEPS)
 
 fclean : clean
 	rm -f $(NAME)
+
+-include $(DEPS)
 
 re : fclean all
