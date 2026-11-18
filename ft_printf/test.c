@@ -6,11 +6,13 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 10:05:51 by mbou-ani          #+#    #+#             */
-/*   Updated: 2026/11/18 10:39:54 by mbou-ani         ###   ########.fr       */
+/*   Updated: 2026/11/18 15:00:06 by mbou-ani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <unistd.h>
+#include <limits.h>
 
 /****/
 /*TEST PRINTF*/
@@ -18,7 +20,7 @@
 
 int	main(void)
 {
-	printf("%u", 0);
+	printf("%u", INT_MIN);
 }
 
 /****/
@@ -63,4 +65,36 @@ int	main(void)
 // int	main(void)
 // {
 // 	printf("%d", sumargs(3, 6, 4, 0));
+// }
+
+/****/
+/*TEST RETURN SUM FROM ARGUMENTS*/
+/****/
+
+// int	ft_add_two(va_list *args)
+// {
+// 	int	a;
+// 	int	b;
+
+// 	a = va_arg(*args, int);
+// 	b = va_arg(*args, int);
+// 	return (a + b);
+// }
+
+// int	ft_sum_pairs(int pairs, ...)
+// {
+// 	va_list	args;
+// 	int		total;
+
+// 	va_start(args, pairs);
+// 	total = 0;
+// 	while (pairs--)
+// 		total += ft_add_two(&args);
+// 	va_end(args);
+// 	return (total);
+// }
+
+// int	main(void)
+// {
+// 	printf("%d", ft_sum_pairs(2, 1, 4, 5, 10));
 // }

@@ -7,9 +7,9 @@ tags: [ft_printf, plan, checklist]
 Retour : [[00 - Accueil]] · Chaque brique suit [[01 - Workflow]] · Aide : [[02 - Quand appeler Claude]]
 
 ## Phase 0 : Préparation (≈ 30-45 min)
-- [ ] Lire le PDF du sujet en entier, une fois, sans coder
+- [x] Lire le PDF du sujet en entier, une fois, sans coder
 - [ ] Reformuler en 5 lignes ce que demande le projet → [[07 - Journal]]
-- [ ] Lire `man 3 stdarg` et `man 2 write`
+- [x] Lire `man 3 stdarg` et `man 2 write`
 - [ ] Créer le dépôt, les fichiers vides, `ft_printf.h` avec header guard
 - [ ] Écrire un Makefile squelette (règles `$(NAME) all clean fclean re`, `ar rcs`)
 - [ ] Créer `tests/main.c` à partir de [[05 - Tests]]
@@ -20,9 +20,9 @@ Ordre conseillé : du plus simple au plus piégeux.
 
 | # | Brique | Sert pour | Piège principal | Fait |
 |---|--------|-----------|-----------------|------|
-| 1 | `ft_putchar` | `%c`, `%%` | Retourne 1 (ou -1 si `write` échoue) | [ ] |
-| 2 | `ft_putstr` | `%s` | `NULL` → `(null)` ; chaîne vide → 0 | [ ] |
-| 3 | `ft_putnbr` (int) | `%d` `%i` | `INT_MIN` ; 0 ; signe `-` compté dans le retour | [ ] |
+| 1 | `ft_putchar` | `%c`, `%%` | Retourne 1 (ou -1 si `write` échoue) | [x] |
+| 2 | `ft_putstr` | `%s` | `NULL` → `(null)` ; chaîne vide → 0 | [x] |
+| 3 | `ft_putnbr` (int) | `%d` `%i` | `INT_MIN` ; 0 ; signe `-` compté dans le retour | [x] |
 | 4 | putnbr non signé | `%u` | `-1` passé en `%u` → 4294967295 | [ ] |
 | 5 | conversion en base | `%x` `%X` | 0 → `0` ; minuscules vs majuscules | [ ] |
 | 6 | `ft_putptr` | `%p` | Préfixe `0x` ; cas `NULL` ; `unsigned long` | [ ] |

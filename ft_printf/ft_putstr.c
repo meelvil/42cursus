@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                       :::      ::::::::    */
-/*   ft_putstr.c                                       :+:      :+:    :+:    */
-/*                                                   +:+ +:+         +:+      */
-/*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
-/*                                               +#+#+#+#+#+   +#+            */
-/*   Created: 2026/11/16 14:47:42 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/16 15:00:03 by mbou-ani        ###   ########.fr        */
+/*                                                        :::      ::::::::   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbou-ani <mbou-ani@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/16 14:47:42 by mbou-ani          #+#    #+#             */
+/*   Updated: 2026/11/18 14:51:56 by mbou-ani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_putstr(char *s)
+int	ft_putstr(char *s)
 {
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		ft_putchar(s[i]);
-		i++;
-	}
+	if (s)
+		return (write(1, s, ft_strlen(s)));
+	return (0);
 }
 
 // int	main(void)
 // {
-// 	ft_putstr("Melvil");
+// #include <stdio.h>
+// 	printf("\n%d", ft_putstr("Melvil"));
 // }

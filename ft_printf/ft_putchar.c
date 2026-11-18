@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                       :::      ::::::::    */
-/*   ft_putchar.c                                      :+:      :+:    :+:    */
-/*                                                   +:+ +:+         +:+      */
-/*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
-/*                                               +#+#+#+#+#+   +#+            */
-/*   Created: 2026/11/16 14:44:30 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/16 14:47:26 by mbou-ani        ###   ########.fr        */
+/*                                                        :::      ::::::::   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbou-ani <mbou-ani@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/16 14:44:30 by mbou-ani          #+#    #+#             */
+/*   Updated: 2026/11/18 14:50:46 by mbou-ani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_putchar(char c)
+int	ft_putchar(char c)
 {
-	write(1, &c, 1);
+	return (write(1, &c, 1));
 }
 
 // int	main(void)
 // {
-// 	ft_putchar('M');
+// #include <stdio.h>
+// 	printf("\n%d", ft_putchar('M'));
 // }
