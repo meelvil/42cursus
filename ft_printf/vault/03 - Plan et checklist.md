@@ -23,7 +23,7 @@ Ordre conseillé : du plus simple au plus piégeux.
 | 1 | `ft_putchar` | `%c`, `%%` | Retourne 1 (ou -1 si `write` échoue) | [x] |
 | 2 | `ft_putstr` | `%s` | `NULL` → `(null)` ; chaîne vide → 0 | [x] |
 | 3 | `ft_putnbr` (int) | `%d` `%i` | `INT_MIN` ; 0 ; signe `-` compté dans le retour | [x] |
-| 4 | putnbr non signé | `%u` | `-1` passé en `%u` → 4294967295 | [ ] |
+| 4 | putnbr non signé | `%u` | `-1` passé en `%u` → 4294967295 | [x] |
 | 5 | conversion en base | `%x` `%X` | 0 → `0` ; minuscules vs majuscules | [ ] |
 | 6 | `ft_putptr` | `%p` | Préfixe `0x` ; cas `NULL` ; `unsigned long` | [ ] |
 

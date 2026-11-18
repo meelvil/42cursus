@@ -32,11 +32,12 @@ Retour : [[00 - Accueil]] · Feuille de route : [[03 - Plan et checklist]]
 ### 2026-11-18
 - Fait :
   - Phase 0 : sujet lu, `man 3 stdarg` et `man 2 write` lus ; Makefile squelette créé (`libftprintf.a`, `-MMD`).
-  - Briques écrites : `ft_putchar`, `ft_putstr`, `ft_strlen`, `ft_putnbr` (compte les chiffres + signe via `count_digits`, gère `INT_MIN` grâce au `long`), `ft_putunsignednbr` (cast en `unsigned int`, en cours — pas fini).
+  - Briques écrites : `ft_putchar`, `ft_putstr`, `ft_strlen`, `ft_putnbr` (compte les chiffres + signe via `count_digits`, gère `INT_MIN` grâce au `long`), `ft_putunsignednbr` (terminée et testée).
   - `ft_printf` : seulement un squelette (`va_start` + test `ispercent`), pas encore de boucle ni de dispatch.
   - Compris que `printf` doit retourner le nombre d'octets écrits. Continué ma mental card sur le projet.
 - État actuel / à corriger :
-  - `ft_putunsignednbr` prend un `int` : à passer en `unsigned int` (sinon `%u` avec grande valeur faux), et finir la fonction.
+  - `ft_putunsignednbr` : terminée. Signature `unsigned int` (header à jour), `count_digits` en `unsigned int`, casts et test `n >= 0` retirés, `main` commenté. Testé (compilation `-Wall -Wextra -Werror`) : `-1` → `4294967295` retour 10 ; `0` → retour 1 ; `42` → retour 2. Brique 4 validée.
+  - Même défaut que dans `ft_putnbr` à traiter plus tard : le retour est calculé par `count_digits` et recalculé à chaque appel récursif (marche, mais ne reflète pas les octets réellement écrits).
   - `ft_putnbr` : le retour vient de `count_digits` et non des retours des `ft_putchar` ; les appels récursifs `ft_putnbr(nb / 10)` recalculent `total` pour rien.
   - `ft_printf.c` appelle `ispercent` (défini dans `ft_percent.c`) mais le header déclare `ft_percent` → incohérence ; `va_end` manquant.
   - Makefile : `SOURCES` ne contient que `ft_printf.c` (ajouter les briques) ; faute de frappe `fclean: cleam` ; `-include`/`re` à vérifier.
@@ -45,7 +46,7 @@ Retour : [[00 - Accueil]] · Feuille de route : [[03 - Plan et checklist]]
   - Le détail du retour de `printf` (octets écrits vs à écrire ?) — besoin de précisions / recherche.
   - Le lien entre les fonctions : comment les briques (`ft_putchar`, `ft_putstr`, `ft_putnbr`, etc.) communiquent entre elles et avec `ft_printf` (qui appelle qui, qui compte les octets, comment la valeur de retour remonte).
   - Ce que `ft_printf` contiendra réellement à l'intérieur d'elle-même : parcours de la chaîne, gestion de `%`, `va_list`, dispatch vers les briques, cumul du retour.
-- Prochaine étape : clarifier la valeur de retour (compter les octets réellement écrits par chaque brique) et l'intégrer au test ; finir `ft_putunsignednbr` (brique 4), puis conversion en base (`%x` `%X`).
+- Prochaine étape : clarifier la valeur de retour (compter les octets réellement écrits par chaque brique) et l'intégrer au test ; puis brique 5 : conversion en base (`%x` `%X`).
 
 ## Blocages résolus (pour ne pas les refaire)
 | Symptôme | Cause | Solution |

@@ -1,53 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_putunsignednbr.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbou-ani <mbou-ani@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/11/18 14:28:58 by mbou-ani          #+#    #+#             */
-/*   Updated: 2026/11/18 15:44:50 by mbou-ani         ###   ########.fr       */
+/*                                                       :::      ::::::::    */
+/*   ft_putunsignednbr.c                               :+:      :+:    :+:    */
+/*                                                   +:+ +:+         +:+      */
+/*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
+/*                                               +#+#+#+#+#+   +#+            */
+/*   Created: 2026/11/18 14:28:58 by mbou-ani         #+#    #+#              */
+/*   Updated: 2026/11/18 15:56:08 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	count_digits(int n)
+static int	count_digits(unsigned int n)
 {
-	unsigned int	nb;
-	int				i;
+	int	i;
 
-	nb = (unsigned int) n;
 	i = 0;
-	if (nb == 0)
+	if (n == 0)
 		return (i + 1);
-	while (nb > 0)
+	while (n > 0)
 	{
-		nb = nb / 10;
+		n = n / 10;
 		i++;
 	}
 	return (i);
 }
 
-int	ft_putunsignednbr(int n)
+int	ft_putunsignednbr(unsigned int n)
 {
-	int				total;
-	unsigned int	nb;
+	int	total;
 
-	nb = (unsigned int) n;
-	total = count_digits(nb);
-	if (nb >= 0 && nb <= 9)
-		ft_putchar(nb + '0');
-	if (nb >= 10)
+	total = count_digits(n);
+	if (n <= 9)
+		ft_putchar(n + '0');
+	if (n >= 10)
 	{
-		ft_putunsignednbr(nb / 10);
-		ft_putunsignednbr(nb % 10);
+		ft_putunsignednbr(n / 10);
+		ft_putunsignednbr(n % 10);
 	}
 	return (total);
 }
 
-int	main(void)
-{
-#include <stdio.h>
-	printf("\n%d", ft_putunsignednbr(1));
-}
+// int	main(void)
+// {
+// #include <stdio.h>
+// 	printf("\n%d\n", ft_putunsignednbr(-1));
+// 	printf("\n%d\n", ft_putunsignednbr(0));
+// }
