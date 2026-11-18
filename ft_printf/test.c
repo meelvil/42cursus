@@ -6,7 +6,7 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 10:05:51 by mbou-ani          #+#    #+#             */
-/*   Updated: 2026/11/17 15:00:42 by mbou-ani         ###   ########.fr       */
+/*   Updated: 2026/11/18 10:39:54 by mbou-ani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 /*TEST PRINTF*/
 /****/
 
-// int	main(void)
-// {
-// printf("%x", 10);
-// }
+int	main(void)
+{
+	printf("%u", 0);
+}
 
 /****/
 /*TEST PRINT STRING FROM ARGUMENT*/

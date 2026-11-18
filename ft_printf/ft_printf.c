@@ -6,25 +6,12 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/17 14:57:03 by mbou-ani          #+#    #+#             */
-/*   Updated: 2026/11/17 15:08:58 by mbou-ani         ###   ########.fr       */
+/*   Updated: 2026/11/18 10:35:25 by mbou-ani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-
-static int	ispercent(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == '%')
-			return (1);
-		i++;
-	}
-	return (0);
-}
+#include "ft_printf.h"
 
 int	ft_printf(const char *s, ...)
 {

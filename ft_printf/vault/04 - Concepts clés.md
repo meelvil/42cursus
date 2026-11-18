@@ -13,6 +13,7 @@ Retour : [[00 - Accueil]] · Appelle Claude quand un de ces points reste flou (n
 - `va_end(ap)` : à appeler avant de quitter la fonction qui a fait `va_start`.
 - Si le `type` demandé ne correspond pas à ce qui a été passé, le comportement est indéfini.
 - Promotions : un `char` passé à une fonction variadique arrive comme un `int`. Que demander à `va_arg` pour `%c` ?
+- Explication détaillée de chaque macro, avec tableau des types : [[09 - Man pages décryptées]].
 
 Exemple **voisin** (pas ton projet) :
 ```c
@@ -36,7 +37,11 @@ int	ft_sum(int count, ...)
 > Sur x86-64 Linux, passer `va_list` directement semble marcher. Mais le standard dit qu'après qu'une fonction appelée a fait `va_arg` dessus, la valeur dans l'appelant est **indéterminée**. La façon portable : passer un **pointeur** `va_list *`. Ça compte pour ton design du dispatcher (et pour la norme : 4 paramètres max).
 
 ## 2. `write`
-- `ssize_t write(int fd, const void *buf, size_t count)` : retourne le nombre d'octets écrits, ou **-1** en cas d'erreur.
+- C'est la fonction de `<unistd.h>` : `write(fd, adresse, taille)`. Son prototype complet s'écrit `ssize_t write(int fd, const void *buf, size_t count);`
+- `ssize_t` n'est **pas** une autre fonction : c'est juste son type de retour (entier signé, pour pouvoir valoir -1).
+- Elle retourne le nombre d'octets écrits, ou **-1** en cas d'erreur.
+- Le 2e argument est une **adresse** : pour un `char c`, on passe `&c`.
+- Détails argument par argument : [[09 - Man pages décryptées]].
 - Pas de buffer : un `write` par appel. Garde ça simple, la performance n'est pas le sujet.
 - Réfléchis : que dois-tu retourner depuis ta brique si `write` échoue ?
 
@@ -69,3 +74,4 @@ Questions pour toi :
 
 ## Pour aller plus loin
 `man 3 stdarg` · `man 2 write` · `man 3 printf`
+Guide de lecture de ces trois pages : [[09 - Man pages décryptées]]
