@@ -11,7 +11,7 @@ Retour : [[00 - Accueil]] · Chaque brique suit [[01 - Workflow]] · Aide : [[02
 - [ ] Reformuler en 5 lignes ce que demande le projet → [[07 - Journal]]
 - [x] Lire `man 3 stdarg` et `man 2 write`
 - [ ] Créer le dépôt, les fichiers vides, `ft_printf.h` avec header guard
-- [ ] Écrire un Makefile squelette (règles `$(NAME) all clean fclean re`, `ar rcs`)
+- [x] Écrire un Makefile squelette (règles `$(NAME) all clean fclean re`, `ar rcs`)
 - [ ] Créer `tests/main.c` à partir de [[05 - Tests]]
 - 🤖 Facultatif : faire valider ta reformulation
 
