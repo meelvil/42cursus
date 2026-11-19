@@ -6,8 +6,27 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/19 12:30:29 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/19 12:30:49 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/19 23:51:31 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	*sorttab(int *tab);
+typedef struct s_stacks
+{
+	int	*a;
+	int	*b;
+	int	size_a;
+	int	size_b;
+}	t_stacks;
+
+int		*parsetab(int *tab);
+void	sa(t_stacks *s);
+void	sb(t_stacks *s);
+void	ss(t_stacks *s);
+void	pa(t_stacks *s);
+void	pb(t_stacks *s);
+void	ra(t_stacks *s);
+void	rb(t_stacks *s);
+void	rr(t_stacks *s);
+void	rra(t_stacks *s);
+void	rrb(t_stacks *s);
+void	rrr(t_stacks *s);

@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                       :::      ::::::::    */
-/*   sorting.c                                         :+:      :+:    :+:    */
+/*   sortstacks.c                                      :+:      :+:    :+:    */
 /*                                                   +:+ +:+         +:+      */
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
-/*   Created: 2026/11/19 12:25:24 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/19 12:39:36 by mbou-ani        ###   ########.fr        */
+/*   Created: 2026/11/19 23:45:13 by mbou-ani         #+#    #+#              */
+/*   Updated: 2026/11/19 23:46:21 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "push_swap.h"
 
-int	*sorttab(int *tab, int argc)
+void	sa(t_stacks *s)
 {
-	int	i;
-	int	*subtab;
+}
 
-	subtab = malloc(sizeof(int) * (argc - 1));
-	if (!subtab)
-		return (NULL);
-	i = 0;
-	while (i < 3)
-	{
-		subtab[i] = tab[i];
-		i++;
-	}
-	return (subtab);
+void	sb(t_stacks *s)
+{
+}
+
+void	ss(t_stacks *s)
+{
 }
