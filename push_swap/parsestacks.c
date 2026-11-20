@@ -6,29 +6,34 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/19 12:25:24 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/20 09:27:16 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/20 15:23:50 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "libft.h"
 #include "push_swap.h"
 
 int	*parsestacks(t_stacks *s, int argc, char *argv[])
 {
 	int	index;
-	int	parse;
 
 	s->a = malloc(sizeof(int) * (argc - 1));
+	if (!s->a)
+		return (NULL);
 	s->b = malloc(sizeof(int) * (argc - 1));
-	s->size_a = argc - 1;
-	s->size_b = argc - 1;
-	index = argc - 1;
-	while (index >= 1)
+	if (!s->b)
 	{
-		s->a[parse] = ft_atoi(argv[index]);
-		index--;
-		parse++;
+		free(s->a);
+		return (NULL);
+	}
+	s->size_a = argc - 1;
+	s->size_b = 0;
+	index = 1;
+	while (index < argc)
+	{
+		if (!atoicheck(argv[index], &s->a[index - 1]))
+			return (NULL);
+		index++;
 	}
 	return (s->a);
 }

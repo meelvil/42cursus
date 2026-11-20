@@ -49,6 +49,20 @@ Retour : [[00 - Accueil]] · Feuille de route : [[03 - Plan et checklist]]
   - Ce que `ft_printf` contiendra réellement à l'intérieur d'elle-même : parcours de la chaîne, gestion de `%`, `va_list`, dispatch vers les briques, cumul du retour.
 - Prochaine étape : retirer les `main`/`<stdio.h>`/`<limits.h>` de `ft_putnbr.c` et `ft_putunsignednbr.c`, ajouter les cas ci-dessus à la matrice de [[05 - Tests]] ; puis brique 5 : conversion en base (`%x` `%X`).
 
+### 2026-11-21
+- Fait :
+  - `ft_printf` : boucle sur la chaîne + dispatch via `ft_format(&args, c)` (la `va_list` est passée par pointeur). `ft_percent.c` supprimé.
+  - `ft_format` branché pour `%c` `%s` `%d` `%i` `%u` `%%`. `ft_printf` fonctionne sur les cas simples.
+  - `%%` corrigé : `ft_format` appelle directement `ft_putchar('%')` (plus de `va_arg` consommé à tort) ; `ft_putpercent.c` supprimé et retiré de `ft_printf.h`.
+- État actuel / à corriger :
+  - `%p` affiche `To DO` ; `%x` / `%X` appellent `ft_putunsignednbr` (base 10) → conversion en base 16 pas encore faite (brique 5).
+  - `ft_format` n'a pas de `return` final (conversion inconnue = comportement indéfini).
+  - Gestion d'erreur : les retours `-1` de `write` ne sont pas propagés dans `ft_printf` / `ft_putunsignednbr` (le total s'additionne avec des `-1`).
+  - `%s` avec `NULL` n'affiche rien (le vrai `printf` affiche `(null)`).
+  - `main` de test encore dans `ft_printf.c` (à sortir vers `test.c`).
+- Bloqué sur : rien. Je reprends moi-même la suite.
+- Prochaine étape : fonction générique base (`%x` `%X`), puis `%p`, puis propagation des erreurs ; ajouter les cas à [[05 - Tests]].
+
 ## Blocages résolus (pour ne pas les refaire)
 | Symptôme | Cause | Solution |
 |----------|-------|----------|

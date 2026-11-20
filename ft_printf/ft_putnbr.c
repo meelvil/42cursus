@@ -6,7 +6,7 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/18 14:11:43 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/18 23:16:14 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/20 17:21:08 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	ft_putnbr(int n)
 	return (sign + numbers);
 }
 
-// int	main(void)
-// {
+/*int	main(void)
+{
 // #include <stdio.h>
-// 	printf("\n%d", ft_putnbr(10));
-// }
+printf("\n%d", ft_putnbr(10));
+}*/

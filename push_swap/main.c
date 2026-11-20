@@ -6,14 +6,13 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/19 12:17:12 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/20 09:24:53 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/20 15:27:59 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <io.h>
 #include "push_swap.h"
-#include "libft.h"
 
 int	main(int argc, char *argv[])
 {
@@ -21,14 +20,15 @@ int	main(int argc, char *argv[])
 	int			i;
 
 	i = 1;
-	printf("%d\n", ft_atoi(argv[i]));
+	if (argc < 2)
+		return (0);
 	if (!parsestacks(&s, argc, argv))
 		return (write(2, "Error\n", 6), 1);
-	i = argc - 1;
-	while (i >= 1)
+	i = 0;
+	while (i < s.size_a)
 	{
 		printf("%d\n", s.a[i]);
-		i--;
+		i++;
 	}
 	return (0);
 }
