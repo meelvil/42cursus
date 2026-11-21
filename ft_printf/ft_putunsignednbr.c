@@ -6,7 +6,7 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/18 14:28:58 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/21 00:10:51 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/21 19:46:56 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@
 int	ft_putunsignednbr(unsigned int n)
 {
 	if (n >= 10)
-	{
 		return (ft_putunsignednbr(n / 10) + ft_putunsignednbr(n % 10));
-	}
 	return (ft_putchar(n + '0'));
 }
 

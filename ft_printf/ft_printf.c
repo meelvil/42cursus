@@ -6,7 +6,7 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/17 14:57:03 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/21 00:29:48 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/21 19:50:57 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,5 @@ int	ft_printf(const char *s, ...)
 
 int	main(void)
 {
-	ft_printf("%s\n%c\n%d", "Melvil", 'A', 14);
+	ft_printf("%x\n", -1);
 }
