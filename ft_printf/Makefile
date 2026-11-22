@@ -1,7 +1,9 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -MMD
 
-SOURCES = ft_printf.c
+SOURCES = ft_printf.c ft_format.c ft_strlen.c ft_putchar.c\
+	ft_putstr.c ft_putnbr.c ft_putunsignednbr.c ft_puthex.c\
+	ft_printadress.c
 
 OBJECTS = $(SOURCES:.c=.o)
 DEPS = $(SOURCES:.c=.d)
@@ -12,20 +14,20 @@ HEADER = -I .
 
 all: $(NAME)
 
-%.o: %.c Makefile
+%.o: %.c ft_printf.h Makefile
 	$(CC) $(CFLAGS) $(HEADER) -c $< -o $@
 
 $(NAME): $(OBJECTS)
 	ar rcs $@ $^
 
-.PHONY: all clean fclean re
-
 clean:
 	rm -f $(OBJECTS) $(DEPS)
 
-fclean: cleam
+fclean: clean
 	rm -f $(NAME)
 
--include $(DEPS)
-
 re: fclean all
+
+.PHONY: all clean fclean re
+
+-include $(DEPS)

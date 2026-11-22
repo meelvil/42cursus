@@ -6,7 +6,7 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/20 18:47:05 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/21 19:01:36 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/22 01:15:44 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_format(va_list *args, char c)
 	if (c == 's')
 		return (ft_putstr(va_arg(*args, char *)));
 	if (c == 'p')
-		return ((ft_putstr("To DO")));
+		return (ft_printadress(va_arg(*args, void *)));
 	if (c == 'd')
 		return (ft_putnbr(va_arg(*args, int)));
 	if (c == 'i')
@@ -32,4 +32,5 @@ int	ft_format(va_list *args, char c)
 		return (ft_upperhex(va_arg(*args, unsigned int)));
 	if (c == '%')
 		return (((ft_putchar('%'))));
+	return (0);
 }

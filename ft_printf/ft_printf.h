@@ -6,7 +6,7 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/16 09:54:51 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/21 19:00:41 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/22 01:16:33 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,7 @@ int	ft_putchar(char c);
 int	ft_putstr(char *s);
 int	ft_putnbr(int n);
 int	ft_putunsignednbr(unsigned int n);
+int	ft_printadress(void *p);
 int	ft_lowerhex(unsigned int n);
 int	ft_upperhex(unsigned int n);
+int	ft_longhex(unsigned long n);

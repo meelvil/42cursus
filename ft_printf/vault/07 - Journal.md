@@ -63,7 +63,32 @@ Retour : [[00 - Accueil]] · Feuille de route : [[03 - Plan et checklist]]
 - Bloqué sur : rien. Je reprends moi-même la suite.
 - Prochaine étape : fonction générique base (`%x` `%X`), puis `%p`, puis propagation des erreurs ; ajouter les cas à [[05 - Tests]].
 
+### 2026-11-22
+- Fait :
+  - `%x` / `%X` : `ft_lowerhex` / `ft_upperhex` (récursion, retours cumulés) dans `ft_puthex.c`, branchés dans `ft_format`.
+  - `%p` : `ft_printadress` (`ft_printadress.c`) → `(nil)` si NULL, sinon `0x` + `ft_longhex((unsigned long)p)`. Prototype ajouté au header, fichier ajouté à `SOURCES`.
+  - **Bug trouvé puis corrigé dans `ft_longhex`** : cas de base `ft_putchar(n)` au lieu de `ft_putchar(hex[n])` → le 1er chiffre hexa disparaissait (`0x61ff14` affiché `0x1ff14`) et le retour était faux. Corrigé.
+  - Testé (`-Wall -Wextra -Werror`) : `&x` → `0x61ff14` (retour 8), `NULL` → `(nil)`, `0x1f` → `0x1f`. Les 3 cas sont corrects.
+  - `%s` avec `NULL` affiche maintenant `(null)` ; `ft_format` a un `return (0)` final.
+  - Compris : le `printf` de Windows (MinGW) affiche `0061FF14` / `00000000` pour `%p` (majuscules, 8 chiffres, pas de `0x`). Ce n'est pas la référence : l'école est sous Linux (`0x...` en minuscules, `(nil)`).
+  - Compris : un pointeur non initialisé donne une valeur différente à chaque exécution (comportement indéfini), il faut tester avec `&x`.
+- État actuel / à corriger :
+  - **Toutes les conversions sont faites** : `%c` `%s` `%p` `%d` `%i` `%u` `%x` `%X` `%%`.
+  - Pas encore comparé à `printf` sur Linux (WSL / VM / cluster 42) ; les écarts vus sous Windows viennent de la libc.
+  - Propagation des erreurs : les `-1` de `write` ne sont pas gérés (le total s'additionne avec des `-1`).
+  - `(unsigned long)` fait 32 bits sous Windows 64 → tronque l'adresse. OK sous Linux ; `uintptr_t` si besoin de portabilité.
+  - Conversion inconnue (`%z`) : retourne 0 sans rien afficher (comportement choisi à noter dans « Décisions de design »).
+  - Ménage du dépôt : `main.c` (test `%p` avec pointeur non initialisé) et `vault/test.c` à sortir vers `tests/` ; `a.exe`, `*.o`, `*.d`, `libftprintf.a` ne doivent pas être commités (`.gitignore`).
+  - Norminette pas encore passée.
+- Bloqué sur : rien.
+- Prochaine étape :
+  1. Tester sur Linux : comparer `printf` et `ft_printf` (sortie **et** valeur de retour) pour chaque conversion, y compris `INT_MIN`, `UINT_MAX`, `0`, `NULL`, chaîne vide, `%` en fin de chaîne. Noter les cas dans [[05 - Tests]].
+  2. Décider et coder la gestion des erreurs `write` (`-1`).
+  3. `make` / `make re` propres, vérifier que `libftprintf.a` ne se relink pas pour rien.
+  4. Norminette, nettoyage du dépôt (`main`, `a.exe`, `.o`), puis commit.
+
 ## Blocages résolus (pour ne pas les refaire)
 | Symptôme | Cause | Solution |
 |----------|-------|----------|
-| | | |
+| `%p` affiche `0x1ff14` au lieu de `0x61ff14` ; retour trop petit | base de `ft_longhex` : `ft_putchar(n)` au lieu de `ft_putchar(hex[n])` | écrire `hex[n]` dans le cas de base |
+| `printf("%p")` donne `0061FF1F`, différent à chaque lancement | pointeur non initialisé + libc Windows (majuscules, sans `0x`) | tester avec `&x` et comparer sous Linux |

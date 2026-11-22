@@ -6,7 +6,7 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/16 14:47:42 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/21 19:36:07 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/22 00:46:12 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,3 @@ int	ft_putstr(char *s)
 	else
 		return (write(1, s, ft_strlen(s)));
 }
-
-/*int main(void)
-{
-// #include <stdio.h>
-printf("\n%d", ft_putstr("Melvil"));
-}*/

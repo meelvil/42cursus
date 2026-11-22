@@ -6,12 +6,11 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/17 14:57:03 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/21 19:50:57 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/22 00:56:06 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 int	ft_printf(const char *s, ...)
 {
@@ -40,9 +39,4 @@ int	ft_printf(const char *s, ...)
 	}
 	va_end(args);
 	return (count);
-}
-
-int	main(void)
-{
-	ft_printf("%x\n", -1);
 }

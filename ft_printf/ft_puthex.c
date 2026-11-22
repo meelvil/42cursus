@@ -6,12 +6,11 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/21 13:18:37 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/21 19:50:43 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/22 01:22:16 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 int	ft_lowerhex(unsigned int n)
 {
@@ -33,7 +32,12 @@ int	ft_upperhex(unsigned int n)
 	return (ft_putchar(hex[n]));
 }
 
-// int	main(void)
-// {
-// 	printf("%d", ft_converthex(348));
-// }
+int	ft_longhex(unsigned long n)
+{
+	char	*hex;
+
+	hex = "0123456789abcdef";
+	if (n > 15)
+		return (ft_longhex(n / 16) + ft_putchar(hex[n % 16]));
+	return (ft_putchar(hex[n]));
+}
