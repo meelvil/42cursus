@@ -10,6 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
+
 #include <unistd.h>
 #include <stdarg.h>
 
@@ -24,3 +27,5 @@ int	ft_printadress(void *p);
 int	ft_lowerhex(unsigned int n);
 int	ft_upperhex(unsigned int n);
 int	ft_longhex(unsigned long n);
+
+#endif
