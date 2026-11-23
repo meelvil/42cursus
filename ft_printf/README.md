@@ -52,7 +52,7 @@ All of these functions return `-1` if a call to `write` fails, and this error is
 
 I chose to give **one function per conversion**, with `ft_format` acting as a simple dispatcher. This keeps every function short (in line with the Norm), easy to test on its own, and makes adding a new conversion trivial : write the function, declare it in the header, add one line in `ft_format`.
 
-The number conversions (`ft_putnbr`, `ft_lowerhex`...) are **recursive** : they print the leading digits first, then the last one. It avoids having to allocate a buffer or reverse a string, so the library needs no `malloc` at all.
+The number conversions (`ft_putnbr`, `ft_lowerhex`...) are **recursive** : they print the leading digits first, then the last one. It avoids having to allocate a buffer or reverse a string, so the library needs no `malloc` at all (it means no leak !).
 
 Every function **returns the amount of characters written** (or `-1` on error), so `ft_printf` only has to add up the returned values to give the same return value as the original *printf*.
 
@@ -77,7 +77,7 @@ int	main(void)
 
 ```bash
 make
-cc -Wall -Wextra -Werror main.c -L. -lftprintf -o test
+cc -Wall -Wextra -Werror main.c libftprintf.a -o test
 ./test
 ```
 
@@ -87,4 +87,4 @@ cc -Wall -Wextra -Werror main.c -L. -lftprintf -o test
 - `man 3 printf` : reference for the behavior of the original function.
 - `man 3 stdarg` : how `va_list`, `va_start`, `va_arg` and `va_end` work.
 - `man 2 write` : the system call used for every output.
-- AI usage : AI was used to help proofread and complete this README. The code itself was written by me.
+- **AI usage :** AI was used to help me understand much better every man pages. I also used it in order to take notes from what I did at the end of every coding sessions, so I knew what would need to be fixed everytime, and from where to start. The code itself was written by me.
