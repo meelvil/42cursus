@@ -34,7 +34,7 @@ static void pad(int n)
 		int b; \
 		ft_printf(SPA); \
 		ft_printf("| "); \
-		a = ft_printf(__VA_ARGS__); \
+		a = ft_printf( __VA_ARGS__); \
 		pad(a); \
 		ft_printf(" | "); \
 		b = printf(__VA_ARGS__); \
@@ -51,9 +51,11 @@ int	main(void)
 {
 	int	c;
 	char *n;
+	void *p;
 
 	c = 14;
 	n = NULL;
+	p = NULL;
 
 	setvbuf(stdout, NULL, _IONBF, 0);
 	ft_printf(STA);
@@ -64,14 +66,19 @@ int	main(void)
 	TEST("s : %s", "Melvil");
 	TEST("s : %s", n);
 	TEST("p : %p", &c);
+	TEST("p : %p", p);
 	TEST("d : %d", INT_MIN);
 	TEST("d : %d", -1);
 	TEST("u : %u", -1);
 	TEST("x : %x", 348);
 	TEST("x : %x", UINT_MAX);
 	TEST("X : %X", 77);
+	TEST("X : %X", UINT_MAX);
 	TEST("%c %s %d %x", 'a', "b", -5, 255);
 	TEST("%%");
-	TEST("Melvil%");
+	TEST("bob %d bob _    %s   _  bob", -5, "Hey");
+	TEST("Newline : \n");
+	TEST("My bad, it broked the tab surely...");
+	// TEST("Melvil%");
 	return (0);
 }
