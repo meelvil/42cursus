@@ -6,12 +6,12 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/19 12:17:12 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/20 15:27:59 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/23 11:03:38 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include <io.h>
+#include <unistd.h>
 #include "push_swap.h"
 
 int	main(int argc, char *argv[])

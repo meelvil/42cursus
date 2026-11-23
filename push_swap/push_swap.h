@@ -6,9 +6,12 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/19 12:30:29 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/20 15:28:01 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/23 11:05:53 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef PUSH_SWAP_H
+# define PUSH_SWAP_H
 
 typedef struct s_stacks
 {
@@ -31,3 +34,5 @@ void	rr(t_stacks *s);
 void	rra(t_stacks *s);
 void	rrb(t_stacks *s);
 void	rrr(t_stacks *s);
+
+#endif
