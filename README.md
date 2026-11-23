@@ -20,10 +20,10 @@ This repository gathers my work as I go through it. I've just started, so expect
 
 ## 🗂️ Projects
 
-| Project | Description | Status |
-| :--- | :--- | :---: |
-| [**libft**](./libft) | My own C library: re-implementation of standard `libc` functions plus extra utilities and linked-list helpers. | ✅ Done |
-| [**ft_printf**](./ft_printf) | Re-implementation of the `printf` function, using variadic arguments. | 🚧 In progress |
+| Project | Description | Status | Grade |
+| :--- | :--- | :---: | :---: |
+| [**libft**](./libft) | My own C library: re-implementation of standard `libc` functions plus extra utilities and linked-list helpers. | ✅ Done | 100/100 |
+| [**ft_printf**](./ft_printf) | Re-implementation of the `printf` function, using variadic arguments (no bonus yet). | ✅ Done | ⏳ Not evaluated yet |
 
 > More projects will be added as I progress through the cursus.
 
@@ -32,6 +32,7 @@ This repository gathers my work as I go through it. I've just started, so expect
 - Low-level C programming and memory management (`malloc`, `free`, pointers)
 - Writing clean code that follows the **Norm** (42's strict style guide)
 - Building with `Makefile`s and static libraries
+- Variadic functions (`stdarg`) and recursion
 - Debugging with `valgrind` and `gdb`
 - Peer evaluation and collaborative learning
 
