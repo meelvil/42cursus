@@ -6,7 +6,7 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/22 00:55:33 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/22 17:06:55 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/25 10:16:17 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 #define W 30
 #define STA "___________________________________________________________________\n"
 #define SEP "|________________________________|________________________________|\n"
-#define SPA "|                                |                                |\n"
+#define SPA "| | |\n"
 
-static void pad(int n)
+static void	pad(int n)
 {
 	while (n++ < W)
 		ft_printf(" ");
@@ -30,33 +30,32 @@ static void pad(int n)
 
 #define TEST(...) \
 	do { \
-		int a; \
-		int b; \
-		ft_printf(SPA); \
-		ft_printf("| "); \
-		a = ft_printf( __VA_ARGS__); \
-		pad(a); \
-		ft_printf(" | "); \
-		b = printf(__VA_ARGS__); \
-		pad(b); \
-		ft_printf(" |"); \
-		if (a == b) \
-			printf(GREEN " [OK]" RESET "\n"); \
-		else \
-			printf(RED " [KO]" RESET "\n"); \
-		ft_printf(SEP); \
+	int	a; \
+	int	b; \
+	ft_printf(SPA); \
+	ft_printf("| "); \
+	a = ft_printf(__VA_ARGS__); \
+	pad(a); \
+	ft_printf(" | "); \
+	b = printf(__VA_ARGS__); \
+	pad(b); \
+	ft_printf(" |"); \
+	if (a == b) \
+		printf(GREEN " [OK]" RESET "\n"); \
+	else \
+	printf(RED " [KO]" RESET "\n"); \
+	ft_printf(SEP); \
 	} while (0)
 
 int	main(void)
 {
-	int	c;
-	char *n;
-	void *p;
+	int		c;
+	char	*n;
+	void	*p;
 
 	c = 14;
 	n = NULL;
 	p = NULL;
-
 	setvbuf(stdout, NULL, _IONBF, 0);
 	ft_printf(STA);
 	ft_printf(SPA);
