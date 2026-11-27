@@ -6,7 +6,7 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>         #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/11/23 15:08:45 by mbou-ani         #+#    #+#              */
-/*   Updated: 2026/11/26 12:04:25 by mbou-ani        ###   ########.fr        */
+/*   Updated: 2026/11/27 11:32:22 by mbou-ani        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 8
+#  define BUFFER_SIZE 14
 # endif
 
 char	*get_next_line(int fd);
