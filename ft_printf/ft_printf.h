@@ -6,14 +6,13 @@
 /*   By: mbou-ani <mbou-ani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 09:54:51 by mbou-ani          #+#    #+#             */
-/*   Updated: 2026/11/23 12:02:09 by mbou-ani         ###   ########.fr       */
+/*   Updated: 2026/11/27 10:37:04 by mbou-ani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-# include <unistd.h>
 # include <stdarg.h>
 
 int	ft_printf(const char *s, ...);
